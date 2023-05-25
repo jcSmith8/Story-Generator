@@ -57,24 +57,3 @@ class StoryInfo:
         #print(f"ChatGPT: {reply}")
         self.generatedStory = reply
         return reply
-    
-    def read_story(self):
-        language = "en"
-        readThis = gTTS(text=self.generatedStory, lang = language, slow=False)
-        readThis.save(f'{self.title}.mp3')
-
-
-newStory = StoryInfo(["John", "James"], "Chris", "California", "1980s", 3, "happy theme", 12)
-
-newStory.print_story_type()
-
-myStory = newStory.write_story()
-
-newStory.generate_title()
-
-print(newStory.title)
-print(newStory.generatedStory)
-
-newStory.read_story()
-
-#def generate_story():
