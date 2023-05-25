@@ -1,4 +1,5 @@
 from gtts import gTTS
+import os.path
 
 ### Reads the story with a specified language. Current available languages are here:
 #   af: Afrikaans
@@ -67,5 +68,5 @@ def read_story(storyObject, lan):
     else:
         language = lan
     readThis = gTTS(text=storyObject.generatedStory, lang = language, slow=False)
-    readThis.save(f'{storyObject.title}{lan}.mp3')
+    readThis.save(f'mp3_files/{storyObject.title}{lan}.mp3')
     
