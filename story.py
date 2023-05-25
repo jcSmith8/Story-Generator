@@ -9,6 +9,7 @@ load_dotenv()
 openai.api_key = os.getenv('OPENAI_API')
 
 class StoryInfo:
+    # Later on, will be initialized after submit button is pressed on the website
     def __init__(self, characters, mainchar, place, time, length, theme, audience):
         self.characters = characters
         self.mainchar = mainchar
@@ -19,9 +20,10 @@ class StoryInfo:
         self.audience = audience
         
     def print_story_type(self):
-        print("Your story will involve", self.characters, "with main character", self.mainchar, "\n")
+        print("Characters:", self.characters, "Main character", self.mainchar, "\n")
         print("Your story will take place in", self.place, "during time period:", self.time, "\n")
-        print("The story will have a theme of:", self.theme, "\n")
+        print("Story theme:", self.theme, "\n")
+        print("Story audience:", self.audience, "\n")
         
     def generate_title(self):
         messages = [ {"role": "system", "content": "You are an intelligent assistant helping to write creative stories based on input criteria."} ]
