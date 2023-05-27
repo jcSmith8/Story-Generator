@@ -1,5 +1,7 @@
 from gtts import gTTS
 import os.path
+from ibm_watson import TextToSpeechV1
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
 ### Reads the story with a specified language. Current available languages are here:
 #   af: Afrikaans
