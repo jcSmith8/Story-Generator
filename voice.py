@@ -62,11 +62,14 @@ import os.path
 #   zh-TW: Chinese (Mandarin/Taiwan)
 #   zh: Chinese (Mandarin)
 
-def read_story(storyObject, lan):
+def read_story(storyObject, lan, readSlow):
     if lan=="":
         language = "en"
     else:
         language = lan
-    readThis = gTTS(text=storyObject.generatedStory, lang = language, slow=False)
+        
+    print("Generating story voiceover . . .")
+    fullText = storyObject.title + " . . . . " + storyObject.generatedStory
+    readThis = gTTS(text=fullText, lang = language, slow = readSlow)
     readThis.save(f'mp3_files/{storyObject.title}{lan}.mp3')
     
