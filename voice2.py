@@ -126,7 +126,7 @@ def generate_chapter_voice(storyObject, current_chap, audioType):
 
     acceptAudio = get_audio_format(audioType)
 
-    print("\n Generating Chapter {current_chap} Voiceover . . . \n")
+    print(f'\n Generating Chapter {current_chap} Voiceover . . . \n')
 
     thisTitle = f'{storyObject.title}_chapter_{current_chap}.wav'
 
@@ -167,8 +167,9 @@ def vlc_player(storyObject):
 
 def compress_audio(storyObject, chapterCount):
     print("\n\n Compressing Chapters into 1 audio file . . . \n\n")
-    i = 0
+    combined_sounds = AudioSegment.from_file(f'mp3_files/{storyObject.title}_chapter_{0}.wav', format = 'wav')
     print(f' \n\n Total chapters to compress: {storyObject.chapterCount} \n\n')
+    i = 1
     while(i < chapterCount):
         combined_sounds += AudioSegment.from_file(f'mp3_files/{storyObject.title}_chapter_{i}.wav', format = 'wav')
         i += 1
@@ -185,5 +186,4 @@ def practice_compress():
     combined_sounds = sound1 + sound2 + sound3
     combined_sounds.export("mp3_files/combined_output.wav", format="wav")
     
-practice_compress();
-    
+

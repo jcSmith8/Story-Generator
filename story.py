@@ -4,15 +4,26 @@ import json
 import os
 from gtts import gTTS
 import random
-
+import pickle
 
 load_dotenv()
 openai.api_key = os.getenv('OPENAI_API')
 
+
+def access_saved_story(title):
+    with open(f'txt_files/{title}.pkl', 'rb') as file:
+        data = pickle.load(file)
+        file.close()
+    return data
+
+# def show_story_info(StoryInfo):
+    
+
+# Randomly initializes a StoryInfo object with characters, main char... to write a good story
 def random_init():
     messages = [ {"role": "system", "content": "You are an intelligent assistant helping to write creative stories based on input criteria."} ]
     
-    print("\n\n Populating new StoryInfo object . . . \n\n")
+    print("\n\n Randomizing a new StoryInfo object . . . \n\n")
     message = f'Instantiate a new StoryInfo object with random information to       \
         create an interesting story. I want you to include characters,    \
         main character, place, time, wordCount=500, theme, and audience. Here is a      \
@@ -34,6 +45,9 @@ def random_init():
     reply = chat.choices[0].message.content                
     print(reply)
     return reply
+
+
+# Similar to random_init, but also generates the first chapter in the story
 def random_story():
     
     messages = [ {"role": "system", "content": "You are an intelligent assistant helping to write creative stories based on input criteria."} ]
@@ -110,6 +124,16 @@ class StoryInfo:
         print("Your story will take place in", self.place, "during time period:", self.time, "\n")
         print("Story theme:", self.theme, "\n")
         print("Story audience:", self.audience, "\n")
+        
+    def print_all_story_info(self):
+        print("Characters:", self.characters, "      Main character", self.mainchar, "\n")
+        print("Place", self.place, "      During time period:", self.time, "\n")
+        print("Theme:", self.theme, "\n")
+        print("Audience:", self.audience, "\n")
+        i = 0
+        for chap in self.chapters:
+            print(f'Chapter {i}: \n {self.chapters[i]}')
+            i += 1
         
     def generate_title(self):
         messages = [ {"role": "system", 
@@ -196,7 +220,15 @@ class StoryInfo:
             self.wholeStory += chap
             self.wholeStory += ("\n\n ---Next Chapter--- \n\n")
             
-        #print(self.wholeStory)
+
+    def save_story(self):
+        
+        with open(f'txt_files/{self.title}.pkl', 'wb') as file:
+            pickle.dump(self, file)
+            file.close()
+
+            
+
         
 
         

@@ -6,6 +6,7 @@
 #    you should see the title "(env)" in the terminal for current location
 # 2. Download all required python packages on pip using the command line:
 #    - python -m pip install
+#    - pip install -r requirements.txt
 # 3. Start the Python server with the following command line
 #    - cd story_generator
 #    - python manage.py runserver
