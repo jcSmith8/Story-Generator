@@ -2,6 +2,14 @@ from ibm_watson import TextToSpeechV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 import os
 from dotenv import load_dotenv
+import vlc
+from pydub import AudioSegment
+import ffmpeg
+
+#HARD TO INSTALL FFMPEG
+# Must install ffmpeg to your LOCAL environment, whatever you are in
+# For me, I had to install it to my Conda environment (conda install ffmpeg)
+
 
 load_dotenv()
 api_key = os.getenv('IBM_API')
@@ -14,9 +22,6 @@ text_to_speech = TextToSpeechV1(
 
 text_to_speech.set_service_url(url_key)
 
-with open(f'mp3_files/filename.wav','wb') as audio_file:
-    audio_file.write(text_to_speech.synthesize('This story will be about a collection of stories.',voice='en-US_MichaelExpressive',accept='audio/mp3').get_result().content)
-    
 
 ### EXPRESSIVE NEURAL VOICES:
 #   en-AU_HeidiExpressive
@@ -53,7 +58,64 @@ with open(f'mp3_files/filename.wav','wb') as audio_file:
 #   es-LA_SofiaV3Voice
 #   es-US_SofiaV3Voice
 
-def generate_voice(storyObject, current_chap):
+def get_audio_format(audioType):
+
+    if(audioType == "alaw"):
+        acceptAudio = 'audio/alaw'
+    elif(audioType == "basic"):
+        acceptAudio = 'audio/basic'
+    elif(audioType == "flac"):
+        acceptAudio = 'audio/flac'
+    elif(audioType == "l16"):
+        acceptAudio = 'audio/l16'
+    elif(audioType == "mp3"):
+        acceptAudio = 'audio/mp3'
+    elif(audioType == "mpeg"):
+        acceptAudio = 'audio/mpeg'
+    elif(audioType == "mulaw"):
+        acceptAudio = 'audio/mulaw'
+    elif(audioType == "vorbis"):
+        acceptAudio = 'audio/ogg;codec=vorbis'
+    elif(audioType == "opus"):
+        acceptAudio = 'audio/ogg;codecs=opus'
+    elif(audioType == "ogg"):
+        acceptAudio = 'audio/ogg'
+    elif(audioType == "wav"):
+        acceptAudio = 'audio/wav'
+    elif(audioType == "webm"):
+        acceptAudio = 'audio/webm'
+    elif(audioType == "webm_opus"):
+        acceptAudio = 'audio/webm;codecs=opus'
+    else:
+        print("\n\n if statements failed \n\n")
+        acceptAudio = 'audio/wav'
+    return acceptAudio
+
+def generate_whole_voice(storyObject, audioType):
+    
+    authenticator = IAMAuthenticator(api_key)
+    text_to_speech = TextToSpeechV1(
+        authenticator=authenticator
+    )
+
+    text_to_speech.set_service_url(url_key)
+    #current_chap = current_chap-1
+
+    acceptAudio = get_audio_format(audioType)
+    
+    print("\n Generating Story Voiceover . . . \n")
+    
+    thisTitle = f'{storyObject.title}_audio_{audioType}.wav'
+    
+    with open(f'mp3_files/{thisTitle}','wb') as audio_file:
+        audio_file.write(text_to_speech.synthesize(
+            storyObject.wholeStory,
+            voice = 'en-US_MichaelExpressive',
+            accept = acceptAudio      
+            ).get_result().content)
+        
+def generate_chapter_voice(storyObject, current_chap, audioType):
+    
     authenticator = IAMAuthenticator(api_key)
     text_to_speech = TextToSpeechV1(
         authenticator=authenticator
@@ -61,13 +123,67 @@ def generate_voice(storyObject, current_chap):
 
     text_to_speech.set_service_url(url_key)
     current_chap = current_chap-1
-    
-    print("Story voiceover generating . . .")
-    
-    with open(f'mp3_files/{storyObject.title}_chapter_{current_chap}.wav','wb') as audio_file:
+
+    acceptAudio = get_audio_format(audioType)
+
+    print("\n Generating Chapter {current_chap} Voiceover . . . \n")
+
+    thisTitle = f'{storyObject.title}_chapter_{current_chap}.wav'
+
+    with open(f'mp3_files/{thisTitle}','wb') as audio_file:
         audio_file.write(text_to_speech.synthesize(
             storyObject.chapters[current_chap],
-            voice='en-US_MichaelExpressive',
-            accept='audio/mp3'      
+            voice = 'en-US_MichaelExpressive',
+            accept = acceptAudio      
             ).get_result().content)
+        
+def compress_mp3(storyObject, chapterCount):
+    infiles = []
+    print("\n\n Compressing Chapters into 1 audio file . . . \n\n")
+    i = 0
+    while(i < chapterCount):
+        
+        infiles.append(f'mp3_files/{storyObject.title}_chapter_{i}.wav')
+
+    outfile = f'mp3_files/{storyObject.title}_full_story.wav'
+
+    data= []
+    for infile in infiles:
+        w = wave.open(infile, 'rb')
+        data.append( [w.getparams(), w.readframes(w.getnframes())] )
+        w.close()
+        
+    output = wave.open(outfile, 'wb')
+    output.setparams(data[0][0])
+    for i in range(len(data)):
+        output.writeframes(data[i][1])
+    output.close()
+    
+def vlc_player(storyObject):
+    media = vlc.MediaPlayer(filename)
+    media.play()
+
+#vlc_player(f'"The Golden Tree's Wish"')
+
+def compress_audio(storyObject, chapterCount):
+    print("\n\n Compressing Chapters into 1 audio file . . . \n\n")
+    i = 0
+    print(f' \n\n Total chapters to compress: {storyObject.chapterCount} \n\n')
+    while(i < chapterCount):
+        combined_sounds += AudioSegment.from_file(f'mp3_files/{storyObject.title}_chapter_{i}.wav', format = 'wav')
+        i += 1
+    combined_sounds.export("mp3_files/{storyObject.title}_FULL.wav", format="wav")
+    
+#practice_compress();
+
+def practice_compress():
+    
+    sound1 = AudioSegment.from_file(f'mp3_files/"Friends in the Forest"_chapter_0.wav', format = 'wav')
+    sound2 = AudioSegment.from_file(f'mp3_files/"Friends in the Forest"_chapter_1.wav', format = 'wav')
+    sound3 = AudioSegment.from_file(f'mp3_files/"Friends in the Forest"_chapter_-1.wav', format = 'wav')
+
+    combined_sounds = sound1 + sound2 + sound3
+    combined_sounds.export("mp3_files/combined_output.wav", format="wav")
+    
+practice_compress();
     
