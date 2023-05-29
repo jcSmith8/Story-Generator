@@ -20,14 +20,15 @@ class StoryInfoDjango(models.Model):
     wordCount = models.IntegerField()
     theme = models.CharField(max_length=255)
     audience = models.CharField(max_length=255)
-    chapters = models.TextField(null=True) #stores chapters as JSON file, need to JSONify later
-    chapterCount = models.IntegerField()
-    wholeStory = models.TextField()
+    chapters = models.TextField(null=True, blank=True) #stores chapters as JSON file, need to JSONify later
+    chapterCount = models.IntegerField(null=True, blank=True)
+    wholeStory = models.TextField(null=True, blank=True)
+    title = models.CharField(max_length = 255, null=True, blank=True)
     
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title)
-        super(Post, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if not self.slug:
+    #         self.slug = slugify(self.title)
+    #     super(Post, self).save(*args, **kwargs)
         
 class StoryForm(ModelForm):
     class Meta:

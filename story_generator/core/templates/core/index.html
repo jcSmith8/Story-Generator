@@ -10,25 +10,17 @@
 
         <div class = "grid grid-cols-3 gap-3 place-items-center place-content-center">
             
-            {% for item in items%}
-                <div>
-                    <a href="#" >
-                        <div class = "bg-white rounded-t-xl h-64 w-full">
-                            <img src="{{ item.image.url }}" class = "rounded-t-xl h-64 w-full">
-                        </div>
-                        <div class = "p-6 bg-white rounded-b-xl h-64 w-full border-t border-grey-500">
-                            <h2 class = "text-2xl"> {{item.name}} </h2>
-                            <p class = "text-xl"> {{item.main_character}} </p>
-                            <p class = "text-xl"> {{item.place}} </p>
-                            <p class = "text-xl"> {{item.time_period}} </p>
-                            <p class = "text-xl"> {{item.theme}} </p>
-                        </div>
-                    </a>
-                    <span>
-
-                    </span>
+            <h1>Form</h1>
+            <form action="{% url 'index' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form }}
                 </div>
-            {% endfor %}
+                <div class="form-group">
+                    <input class="btn btn-success" type="submit" value="Submit">
+                    <h1>dsjadoisajdiosa</h1>
+                </div>
+            </form>
         </div>
     </div>
 {% endblock %}
