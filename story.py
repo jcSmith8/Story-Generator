@@ -120,27 +120,30 @@ class StoryInfo:
         
     
     def print_story_type(self):
-        print("Characters:", self.characters, "Main character", self.mainchar, "\n")
-        print("Your story will take place in", self.place, "during time period:", self.time, "\n")
+        print("\nCharacters:   ", self.characters, "\n\nMain character:   ", self.mainchar, "\n")
+        print("Your story will take place in:   ", self.place, "during ", self.time, "\n")
         print("Story theme:", self.theme, "\n")
         print("Story audience:", self.audience, "\n")
         
     def print_all_story_info(self):
-        print("Characters:", self.characters, "      Main character", self.mainchar, "\n")
-        print("Place", self.place, "      During time period:", self.time, "\n")
-        print("Theme:", self.theme, "\n")
-        print("Audience:", self.audience, "\n")
+        print("Characters:   ", self.characters, "\nMain character:   ", self.mainchar, "\n")
+        print("Your story will take place in:   ", self.place, "during ", self.time, "\n")
+        print("Story theme:", self.theme, "\n")
+        print("Story audience:", self.audience, "\n")
         i = 0
+        chapterCount = 1
         for chap in self.chapters:
-            print(f'Chapter {i}: \n {self.chapters[i]}')
+            print(f'\n\nChapter {chapterCount}: \n\n {self.chapters[i]}')
             i += 1
+            chapterCount += 1
         
     def generate_title(self):
         messages = [ {"role": "system", 
                       "content": "You are a creative writer determining a title for a story."} 
                     ]
         
-        message = f'Can you give this story a creative title in under 5 words? \n {self.generatedStory}'
+        message = f'Can you give this story a creative title in under 5 words? \n {self.generatedStory} \
+        make sure that the title has no quotes around it. Make sure the title has no period afterwards'
         
         messages.append(
             {"role": "user", "content": message},
@@ -213,6 +216,7 @@ class StoryInfo:
         #print(f"ChatGPT: {reply}")
         self.generatedStory = reply
         self.chapters.append(self.generatedStory)
+        self.save_story()
         return reply
     
     def compress_chapters(self):

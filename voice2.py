@@ -123,7 +123,7 @@ def generate_chapter_voice(storyObject, current_chap, audioType):
 
     text_to_speech.set_service_url(url_key)
     current_chap = current_chap-1
-
+    
     acceptAudio = get_audio_format(audioType)
 
     print(f'\n Generating Chapter {current_chap} Voiceover . . . \n')
