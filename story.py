@@ -2,7 +2,6 @@ from dotenv import load_dotenv
 import openai
 import json
 import os
-from gtts import gTTS
 import random
 import pickle
 
@@ -17,6 +16,14 @@ def access_saved_story(title):
     return data
 
 # def show_story_info(StoryInfo):
+def removeSpecialCharacters(s):
+   t = ""
+   for i in s:
+       if(i == ' '):
+           t+=i
+       if(i.isalpha()):
+           t+=i
+   return t
     
 
 # Randomly initializes a StoryInfo object with characters, main char... to write a good story
@@ -105,7 +112,7 @@ def random_story():
 
 class StoryInfo:
     # Later on, will be initialized after submit button is pressed on the website
-    def __init__(self, characters, mainchar, place, time, wordCount, theme, audience):
+    def __init__(self, characters, mainchar, place, time, wordCount, theme, audience, story_id = None):
         print("\n\n New StoryInfo object created! \n\n")
         self.characters = characters
         self.mainchar = mainchar
@@ -117,6 +124,7 @@ class StoryInfo:
         self.chapters = []
         self.chapterCount = 0
         self.wholeStory = ''
+        self.story_id = story_id
         
     
     def print_story_type(self):

@@ -1,0 +1,123 @@
+form{
+    display:flex;
+    flex-wrap:wrap;
+}
+
+form input, form label {
+    
+    padding:0 5px;
+}
+
+form div{
+    margin:0 5px;
+}
+
+
+#story-board ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#story-board ul li {
+    --c: rgb(101, 222, 238);
+    color: var(--c);
+    font-size: 16px;
+    border: 0.3em solid var(--c);
+    border-radius: 0.5em;
+    width: 12em;
+    height: 3em;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-family: sans-serif;
+    letter-spacing: 0.1em;
+    text-align: center;
+    line-height: 3em;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: 0.5s;
+    margin: 1em;
+    cursor: pointer;
+}
+
+#story-board ul #list4{
+    width: auto;
+    height: auto;
+}
+
+#story-board ul li a{
+    display: block;
+    width: 100%;
+    height:100%;
+    transform: translateY(-10%);
+    z-index:2;
+}
+
+#list1 span{
+    position: absolute;
+    width: 25%;
+    height: 100%;
+    background-color: var(--c);
+    transform: translateY(0);
+    border-radius: 50%;
+    left: calc((var(--n) - 1) * 25%);
+    transition: 0.5s;
+    transition-delay: calc((var(--n) - 1) * 0.1s);
+    z-index: -1;
+}
+
+#list2 span{
+    position: absolute;
+    width: 25%;
+    height: 100%;
+    background-color: var(--c);
+    transform: translateY(-200%);
+    border-radius: 50%;
+    left: calc((var(--n) - 1) * 25%);
+    transition: 0.5s;
+    transition-delay: calc((var(--n) - 1) * 0.1s);
+    z-index: -1;
+}
+
+#list4 span{
+    position: absolute;
+    width: 25%;
+    height: 100%;
+    background-color: var(--c);
+    transform: translateY(-200%);
+    border-radius: 50%;
+    left: calc((var(--n) - 1) * 25%);
+    transition: 0.5s;
+    transition-delay: calc((var(--n) - 1) * 0.1s);
+    z-index: -1;
+}
+
+#list1:hover, #list2:hover {
+    color: black;
+}
+
+#list1:hover span {
+    transform: translateY(-139%) scale(2);
+}
+
+#list2:hover span{
+    transform: translateY(-62%) scale(2);
+}
+
+#list1 span:nth-child(2), #list2 span:nth-child(2) {
+    --n: 1;
+}
+
+#list1 span:nth-child(3), #list2 span:nth-child(3) {
+    --n: 2;
+}
+
+#list1 span:nth-child(4), #list2 span:nth-child(4) {
+    --n: 3;
+}
+
+#list1 span:nth-child(5), #list2 span:nth-child(5){
+    --n: 4;
+}
+
