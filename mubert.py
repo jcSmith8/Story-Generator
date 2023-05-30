@@ -4,6 +4,10 @@ import story
 from story import StoryInfo, random_story, random_init, access_saved_story
 import httpx
 import json
+import requests
+import urllib.request
+import re
+from bs4 import BeautifulSoup
 
 MUBERT_TOKEN = os.getenv('MUBERT_TOKEN')
 MUBERT_COMPANY = os.getenv('MUBERT_COMPANY')
@@ -53,5 +57,34 @@ def create_mubert_song(email, phone, mubert_prompt):
     assert rdata['status'] == 1, "failed to load"
     download_link = rdata['data']['tasks'][0]['download_link']
     print(f'Got download link: {download_link} \n')
+    return download_link
     
-create_mubert_song("cooper.smith0808@gmail.com", "+16501234567")
+downloadURL = create_mubert_song("cooper.smith@gmail.com", "+16501234567", "calm, soothing, slow tempo, background music.")
+
+def download_from_url(mubert_url, song_name):
+    url = f'{mubert_url}'
+    file_extension = '.mp3'   # Example .wav
+    r = requests.get(url)
+
+    # If extension does not exist in end of url, append it
+    if file_extension not in url.split("/")[-1]:
+            filename = f'{last_url_path}{file_extension}'
+    # Else take the last part of the url as filename
+    else:
+            filename = url.split("/")[-1]
+
+    with open(f'mubert_mp3s/{song_name}.mp3', 'wb') as f:
+            # You will get the file in base64 as content
+            f.write(r.content)
+    
+    # r = requests.get(f'{mubert_url}')
+    # soup = BeautifulSoup(r.content, 'html.parser')
+
+    # for a in soup.find_all('a', href=re.compile(r'http.*\.mp3')):
+    #     filename = a['href'][a['href'].rfind("/")+1:]
+    #     print(f'opened: {filename} \n')
+    #     doc = requests.get(a['href'])
+    #     with open(f'mubert_mp3s/{filename}.mp3', 'wb') as f:
+    #         f.write(doc.content)
+            
+download_from_url(downloadURL, "calm soothing background")
