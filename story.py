@@ -191,6 +191,13 @@ class StoryInfo:
         
         return reply
     
+    def write_mubert_prompt(self):
+        MUBERT_TOKEN = os.getenv('MUBERT_TOKEN')
+        MUBERT_COMPANY = os.getenv('MUBERT_COMPANY')
+        url = "https://api.mubert.com/v2/{MUBERT_COMPANY}"
+        
+
+    
     def add_chapter(self):
         messages = [ {
             "role": "system", 
