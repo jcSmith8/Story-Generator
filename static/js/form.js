@@ -12,6 +12,7 @@ $( document ).ready(() => {
     // function will get executed 
     // on click of submit button
     $("#add-chap-btn").click(function(ev) {
+        ev.preventDefault();
         var form = $("#form-2");
         var url = '/create/stage2'
         $.ajax({

@@ -185,9 +185,6 @@ def slowdown_wav(filepath, percentage_val):
     audio = AudioSegment.from_file(filepath, format="wav")
     audio.speedup(playback_speed = percentage_val)
     audio.export(filepath, 'wav')
-<<<<<<< HEAD
 
-    
-=======
->>>>>>> 5ac564c5200795e721298ae6d170697e39d01b22
+
 
