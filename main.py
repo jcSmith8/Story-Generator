@@ -5,6 +5,8 @@ from story import StoryInfo, random_story, random_init, access_saved_story
 from voice import read_story
 from voice2 import generate_chapter_voice, generate_whole_voice, compress_audio
 import pickle
+import mubert
+from mubert import overlay_audio, generate_mubert_token, create_mubert_song, track_mubert_status, download_audio, regenerate_music_low_intensity, regenerate_music_med_intensity, regenerate_music_high_intensity
 
 #       StoryInfo(characters, mainchar, place, time, length, wordCount, theme, audience)
 #newStory = StoryInfo(["John", "James"], "Chris", "California", "16 BC", 3, 1000, "happy theme", 12)
@@ -13,26 +15,41 @@ import pickle
 #newStory = StoryInfo(["John", "James"], "Chris", "Africa", "200s", 3, 200, "happy theme", 5)
 #newStory.print_story_type()
 
-# random_init = random_init()
-# randomStory = eval(random_init)
+# initializes a random StoryInfo() call with random info
+random_init = random_init(300)
+randomStory = eval(random_init)
+randomStory.print_story_type()
 
-# randomStory.print_story_type()
+# starts first chapter of the story
+# openai generates a title and music generation prompt based on the first chapter
+randomStory.start_story()
+randomStory.generate_title()
 
-# randomStory.start_story()
-# randomStory.generate_title()
-# generate_chapter_voice(randomStory, 1, 'wav')
-# randomStory.add_chapter()
-# randomStory.save_story()
-# generate_chapter_voice(randomStory, 2, 'wav')
+# generating the voice sample for chapter 1. Typically takes 1-2 minutes depending on wordCount
+voice_duration_chap_1 = generate_chapter_voice(randomStory, 1, 'wav')
+
+# adds another chapter to the story. Must be called AFTER start_story(), we must have a first chapter to write based on
+#### randomStory.add_chapter()
+
+#generating voice for chapter 2. Duration of voice recording will be passed into create_mubert_song to correlate durations
+#voice_duration_chap_2 = generate_chapter_voice(randomStory, 2, 'wav')
+
+
+#compress_audio(randomStory, 2)
+
+downloadURL = create_mubert_song(randomStory.mubertPrompt, voice_duration_chap_1, f'low')
+download_audio(downloadURL, f'mubert_mp3s/', f'{randomStory.title}')
+overlay_audio(randomStory, f'mp3_files/{randomStory.title}_chapter_0.wav', f'mubert_mp3s/{randomStory.title}.wav')
+
+regenerate_music_low_intensity(randomStory, 1)
+regenerate_music_med_intensity(randomStory, 1)
+regenerate_music_high_intensity(randomStory, 1)
+
 # #randomStory.add_chapter()
 # #generate_chapter_voice(randomStory, 3, 'wav')
+#newStory = access_saved_story("New York Mysteries Uncovered.")
 
-
-# compress_audio(randomStory, 3)
-
-story_stuff = access_saved_story("New York Mysteries Uncovered.")
-
-story_stuff.print_all_story_info()
+#story_stuff.print_all_story_info()
 #myStory = newStory.start_story()
 
 #newStory.generate_title()

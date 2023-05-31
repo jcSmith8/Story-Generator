@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 import openai
 import json
 import os
+#from gtts import gTTS
 import random
 import pickle
 
@@ -16,27 +17,23 @@ def access_saved_story(title):
     return data
 
 # def show_story_info(StoryInfo):
-def removeSpecialCharacters(s):
-   t = ""
-   for i in s:
-       if(i == ' '):
-           t+=i
-       if(i.isalpha()):
-           t+=i
-   return t
     
 
 # Randomly initializes a StoryInfo object with characters, main char... to write a good story
-def random_init():
-    messages = [ {"role": "system", "content": "You are an intelligent assistant helping to write creative stories based on input criteria."} ]
+def random_init(wordCount):
+    messages = [ {"role": "system", "content": "You are an intelligent assistant helping to come up with random parameters for a fictional story."} ]
     
     print("\n\n Randomizing a new StoryInfo object . . . \n\n")
-    message = f'Instantiate a new StoryInfo object with random information to       \
-        create an interesting story. I want you to include characters,    \
-        main character, place, time, wordCount=500, theme, and audience. Here is a      \
-        sample StoryInfo object: StoryInfo(["John", "James"], "Chris", "California",\
-        "16 BC", 1000, "happy theme", 12). I want your output to be in the       \
-        same format as this. Only include the instantiation in the reply, nothing else.'
+    message = f'Please generate inputs for the following categories. Choose from the options for audience: \n\
+        Character list (between 3 and 10 characters) \n\
+        Main Character \n\
+        Place \n\
+        Time period \n\
+        Theme \n\
+        Audience (children, teens, young adults, adults) \n\
+        Here is a sample StoryInfo object: StoryInfo(characters, mainchar, place, time, wordCount, theme, audience) \n\
+        I want your output to be in the same format as this, but with the randomized data you come up with above. The only exception is for the wordCount, which is set to wordCount={wordCount}, but keep it in the instantiation reply. Please do not look at past conversations to determine the answer. \
+        Only include the instantiation in the reply, nothing else.'
         
     messages.append(
         {
@@ -53,6 +50,14 @@ def random_init():
     print(reply)
     return reply
 
+def removeSpecialCharacters(s):
+    t = ""
+    for i in s:
+        if(i == ' '):
+            t+=i
+        if(i.isalpha()):
+            t+=i
+    return t
 
 # Similar to random_init, but also generates the first chapter in the story
 def random_story():
@@ -112,7 +117,7 @@ def random_story():
 
 class StoryInfo:
     # Later on, will be initialized after submit button is pressed on the website
-    def __init__(self, characters, mainchar, place, time, wordCount, theme, audience, story_id = None):
+    def __init__(self, characters, mainchar, place, time, wordCount, theme, audience):
         print("\n\n New StoryInfo object created! \n\n")
         self.characters = characters
         self.mainchar = mainchar
@@ -124,7 +129,7 @@ class StoryInfo:
         self.chapters = []
         self.chapterCount = 0
         self.wholeStory = ''
-        self.story_id = story_id
+        self.durations = []
         
     
     def print_story_type(self):
@@ -144,7 +149,8 @@ class StoryInfo:
             print(f'\n\nChapter {chapterCount}: \n\n {self.chapters[i]}')
             i += 1
             chapterCount += 1
-        
+            
+
     def generate_title(self):
         messages = [ {"role": "system", 
                       "content": "You are a creative writer determining a title for a story."} 
@@ -164,8 +170,45 @@ class StoryInfo:
         )
         reply = chat.choices[0].message.content
         #print(f"ChatGPT: {reply}")
-        self.title = reply
+        self.title = removeSpecialCharacters(reply)
+        print(f'Title is: {reply} \n')
+        print(f'Cleaned title is: {self.title} \n')
+        message2 = f'Can you choose music to best accompany this story? I want the reply to be in a concise format \
+            so that a music generator bot could best use it. Please keep your answer simple, and do not include example songs.'
+                
+        messages.append(
+            {"role": "user", "content": message2},
+        )
+        
+        print("\n Your Mubert Prompt is being created . . . \n")
+        chat = openai.ChatCompletion.create(
+            model = "gpt-3.5-turbo", 
+            messages = messages
+        )
+        reply = chat.choices[0].message.content
+        print(f"ChatGPT mubert reply: {reply}")
+        self.mubertPrompt = reply
         return reply
+    
+    def regenerate_mubert(self):
+        messages = [ {"role": "system", 
+                      "content": "You are determining a good prompt for music generation."} 
+                    ]
+        message = f'Can you generate a good prompt for music generation based on this story? \n {self.generatedStory} \n\
+        Make sure to keep the reply short and concise in under 10 words.'
+        
+        messages.append(
+            {"role": "user", "content": message},
+        )
+        
+        print("\n Your new Mubert prompt is being created . . . \n")
+        chat = openai.ChatCompletion.create(
+            model = "gpt-3.5-turbo", 
+            messages = messages
+        )
+        reply = chat.choices[0].message.content
+        print(f"New Mubert prompt: {reply} \n\n")
+        self.mubertPrompt = reply
         
     def start_story(self):
         messages = [ {"role": "system", "content": "You are an intelligent assistant helping to write creative stories based on input criteria."} ]
@@ -199,6 +242,13 @@ class StoryInfo:
         
         return reply
     
+    def write_mubert_prompt(self):
+        MUBERT_TOKEN = os.getenv('MUBERT_TOKEN')
+        MUBERT_COMPANY = os.getenv('MUBERT_COMPANY')
+        url = "https://api.mubert.com/v2/{MUBERT_COMPANY}"
+        
+
+    
     def add_chapter(self):
         messages = [ {
             "role": "system", 
@@ -226,7 +276,7 @@ class StoryInfo:
         self.chapters.append(self.generatedStory)
         self.save_story()
         return reply
-    
+
     def compress_chapters(self):
         for chap in self.chapters:
             self.wholeStory += chap
@@ -239,7 +289,7 @@ class StoryInfo:
             pickle.dump(self, file)
             file.close()
 
-            
+story_now = StoryInfo('','','','','','','','')   
 
         
 

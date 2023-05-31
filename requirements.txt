@@ -11,3 +11,5 @@ python_vlc==3.0.18122
 replicate==0.8.2
 Flask-SQLAlchemy==3.0.3
 Flask==2.3.2
+pydub
+httpx

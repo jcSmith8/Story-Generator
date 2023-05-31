@@ -14,7 +14,7 @@ with app.app_context():
         word_count = 100,
         theme = "drama",
         audience = "k-12",
-        cover = ''
+        cover = 'sample1.png'
     )
 
     story2 = Stories(
@@ -26,10 +26,22 @@ with app.app_context():
         word_count = 100,
         theme = "adventure",
         audience = "PG13",
+        cover = 'sample2.png'
+    )
+    
+    story3 = Stories(
+        title = 'We are Family',
+        place = "Atlanta",
+        time_period = "2019",
+        characters = "Vin Diesel, Dwayne Johnson, Han Lue",
+        main_character = "Brian O'Conner",
+        word_count = 100,
+        theme = "adventure",
+        audience = "PG13",
         cover = ''
     )
 
-    db.session.add_all([story1, story2])
+    db.session.add_all([story1, story2, story3])
     db.session.commit()
 
     story1_chapter1 = Chapters(
@@ -49,8 +61,14 @@ with app.app_context():
         chapter_count=1,
         content='Go e~~~azy on me babe ~~~'
     )
+    
+    story3_chapter1 = Chapters(
+        story_id=story3.id,
+        chapter_count=1,
+        content='It\'s been a long day, without you, my friend ~~~'
+    )
 
-    db.session.add_all([story1_chapter1, story1_chapter2, story2_chapter1])
+    db.session.add_all([story1_chapter1, story1_chapter2, story2_chapter1, story3_chapter1])
     db.session.commit()
     
     print("finished initializing DB ...")

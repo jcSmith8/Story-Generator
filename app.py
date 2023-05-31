@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, url_for, redirect
-from story import StoryInfo, random_story, random_init, access_saved_story, removeSpecialCharacters
+from story import StoryInfo, random_story, random_init, access_saved_story, removeSpecialCharacters, story_now
 import sqlite3
 import os
 from flask_sqlalchemy import SQLAlchemy
@@ -57,6 +57,7 @@ class Chapters(db.Model):
 
 @app.route('/')
 def index():
+    print(request.root_url)
     stories_3 = Stories.query.limit(3).all()
     print(stories_3)
     return render_template('index.html', stories = stories_3)
@@ -67,9 +68,13 @@ def contact():
 
 @app.route('/create', methods =["GET", "POST"])
 def create():
+    global story_now
+    print(request.environ)
+    route = request.environ['REQUEST_URI'].split('/')[-1]
+    print(route)
     if request.method == "POST":
         # Create a table for the stories
-        story_new = Stories(
+        story_now = Stories(
             story_name= '', 
             place=request.form['place'], 
             time_period=request.form['time_period'], 
@@ -78,61 +83,78 @@ def create():
             theme=request.form['theme'],
             cover=request.form['cover'] if request.form['cover'] != '' else '',
         )
-        db.session.add(story_new)
+        db.session.add(story_now)
         db.session.commit()
            
-        return render_template('form2.html', story=story_new)
+        return render_template('form2.html', story=story_now)
     
     return render_template('form.html')
 
 @app.route('/create/stage2', methods =["GET", "POST"])
 def create2():
+    global story_now
+    print(request.form)
+    print(request.environ)
+    route = request.environ['HTTP_REFERER'].split('/')[-1]
+    print("POST FROM: ", route)
     if request.method == "POST":
         # Create a table for the stories
-        print(request.form)
         
-        story_new_model = StoryInfo(
-            characters=request.form['characters'],
-            mainchar=request.form['place'],
-            place= request.form['place'],
-            time=request.form['time_period'],
-            wordCount=request.form['word_count'],
-            theme=request.form['theme'],
-            audience=request.form['audience'],
-        )
-        story_new_model.start_story()
-        story_new_model.generate_title()
-        story_new_model.title = removeSpecialCharacters(story_new_model.title)
         
-        story_new = Stories(
-            title= story_new_model.title, 
-            place= story_new_model.place, 
-            time_period=story_new_model.time, 
-            characters=story_new_model.characters, 
-            main_character=story_new_model.mainchar,
-            word_count=story_new_model.wordCount,
-            theme=story_new_model.theme,
-            audience=story_new_model.audience,
-            cover=request.form['cover'] if request.form['cover'] != '' else '',
-        )
+        if route == 'create':
+            story_now = StoryInfo(
+                characters=request.form['characters'],
+                mainchar=request.form['place'],
+                place= request.form['place'],
+                time=request.form['time_period'],
+                wordCount=request.form['word_count'],
+                theme=request.form['theme'],
+                audience=request.form['audience'],
+            )
+            story_now.start_story()
+            story_now.generate_title()
+            story_now.title = removeSpecialCharacters(story_now.title)
+            
+            story_new = Stories(
+                title= story_now.title, 
+                place= story_now.place, 
+                time_period=story_now.time, 
+                characters=story_now.characters, 
+                main_character=story_now.mainchar,
+                word_count=story_now.wordCount,
+                theme=story_now.theme,
+                audience=story_now.audience,
+                cover=request.form['cover'] if request.form['cover'] != '' else '',
+            )
+            
+            db.session.add(story_new)
+            db.session.commit()
+            
+            print('new story id: ', story_new.id)
+            story_now.story_id = story_new.id
+            
+            story_chapter_new = Chapters(
+                story_id = story_new.id,
+                chapter_count=len(story_now.chapters),
+                content=story_now.chapters[-1]
+            )
+            db.session.add(story_chapter_new)
+            db.session.commit()
+            
+            return render_template('form2.html', story=story_now)
+        elif route == 'random':
+            random_start = random_init()
+            story_now = eval(random_start)
+
+            story_now.print_story_type()
+
+            story_now.start_story()
+            story_now.generate_title()
+            return render_template('form2.html', story=story_now)
+        else:
+            story_now.add_chapter()
+            return render_template('form2.html', story=story_now)
         
-        db.session.add(story_new)
-        db.session.commit()
-        
-        print('new story id: ', story_new.id)
-        story_new_model.story_id = story_new.id
-        
-        story_chapter_new = Chapters(
-            story_id = story_new.id,
-            chapter_count=len(story_new_model.chapters),
-            content=story_new_model.chapters[-1]
-        )
-        db.session.add(story_chapter_new)
-        db.session.commit()
-           
-        return render_template('form2.html', story=story_new_model)
-        
-    
     return redirect(url_for('create'))
 
 @app.route('/create/stage3', methods =["GET", "POST"])
@@ -152,6 +174,14 @@ def edit():
         return render_template('form2.html')
     
     return render_template('form.html')
+
+@app.route('/create/random', methods =["GET", "POST"])
+def random():
+    if request.method == "POST":
+        # Create a table for the stories
+        return redirect(url_for('index'))
+    
+    return render_template('random.html')
 
 @app.route('/stories', methods =["GET", "POST"])
 def stories():
