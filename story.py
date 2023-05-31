@@ -129,6 +129,7 @@ class StoryInfo:
         self.chapters = []
         self.chapterCount = 0
         self.wholeStory = ''
+        self.durations = []
         
     
     def print_story_type(self):
@@ -173,7 +174,7 @@ class StoryInfo:
         print(f'Title is: {reply} \n')
         print(f'Cleaned title is: {self.title} \n')
         message2 = f'Can you choose music to best accompany this story? I want the reply to be in a concise format \
-            so that a music generator bot could best use it. Please keep your answer simple.'
+            so that a music generator bot could best use it. Please keep your answer simple, and do not include example songs.'
                 
         messages.append(
             {"role": "user", "content": message2},
@@ -189,6 +190,25 @@ class StoryInfo:
         self.mubertPrompt = reply
         return reply
     
+    def regenerate_mubert(self):
+        messages = [ {"role": "system", 
+                      "content": "You are determining a good prompt for music generation."} 
+                    ]
+        message = f'Can you generate a good prompt for music generation based on this story? \n {self.generatedStory} \n\
+        Make sure to keep the reply short and concise in under 10 words.'
+        
+        messages.append(
+            {"role": "user", "content": message},
+        )
+        
+        print("\n Your new Mubert prompt is being created . . . \n")
+        chat = openai.ChatCompletion.create(
+            model = "gpt-3.5-turbo", 
+            messages = messages
+        )
+        reply = chat.choices[0].message.content
+        print(f"New Mubert prompt: {reply} \n\n")
+        self.mubertPrompt = reply
         
     def start_story(self):
         messages = [ {"role": "system", "content": "You are an intelligent assistant helping to write creative stories based on input criteria."} ]

@@ -125,13 +125,40 @@ def overlay_audio(StoryInfoObj, voice_file, music_file):
     voice_seg = AudioSegment.from_wav(f'{voice_file}')
     music_seg = AudioSegment.from_wav(f'{music_file}')
 
-    soft_music_seg = music_seg - 17
-    overlay = voice_seg.overlay(music_seg, position=0)
+    soft_music_seg = music_seg - 10
+    softer_music_seg = music_seg - 17
     overlay_soft = voice_seg.overlay(soft_music_seg, position=0)
+    overlay_softer = voice_seg.overlay(softer_music_seg, position=0)
+    fileName = os.path.basename(os.path.normpath(music_file))
+    fileNameTuple = os.path.splitext(fileName)
+    fileName = fileNameTuple[0]
+    overlay_soft.export(f'overlay_wavs/{fileName}_soft.wav', format="wav")
+    overlay_softer.export(f'overlay_wavs/{fileName}_softer.wav', format="wav")
+    
+    
+def regenerate_music_low_intensity(StoryInfoObj, chapter):
+    i = chapter-1    
+    StoryInfoObj.regenerate_mubert()
+    downloadURL = create_mubert_song(StoryInfoObj.mubertPrompt, StoryInfoObj.durations[i], f'low')
+    download_audio(downloadURL, f'mubert_mp3s/', f'{StoryInfoObj.title}_low')
+    overlay_audio(StoryInfoObj, f'mp3_files/{StoryInfoObj.title}_chapter_{i}.wav', f'mubert_mp3s/{StoryInfoObj.title}_low.wav')
+    
+def regenerate_music_med_intensity(StoryInfoObj, chapter):
+    i = chapter-1    
+    StoryInfoObj.regenerate_mubert()
+    downloadURL = create_mubert_song(StoryInfoObj.mubertPrompt, StoryInfoObj.durations[i], f'medium')
+    download_audio(downloadURL, f'mubert_mp3s/', f'{StoryInfoObj.title}_medium')
+    overlay_audio(StoryInfoObj, f'mp3_files/{StoryInfoObj.title}_chapter_{i}.wav', f'mubert_mp3s/{StoryInfoObj.title}_medium.wav')
+    
+def regenerate_music_high_intensity(StoryInfoObj, chapter):
+    i = chapter-1    
+    StoryInfoObj.regenerate_mubert()
+    downloadURL = create_mubert_song(StoryInfoObj.mubertPrompt, StoryInfoObj.durations[i], f'high')
+    download_audio(downloadURL, f'mubert_mp3s/', f'{StoryInfoObj.title}_high')
+    overlay_audio(StoryInfoObj, f'mp3_files/{StoryInfoObj.title}_chapter_{i}.wav', f'mubert_mp3s/{StoryInfoObj.title}_high.wav')
+    
 
-    overlay.export(f'overlay_wavs/overlaid_0sec_offset.wav', format="wav")
-    overlay_soft.export(f'overlay_wavs/{StoryInfoObj.title}.wav', format="wav")
-
+    
 #mubert_prompt = f'Violin, Piano, Saxophone  , Struggle between passion and security , Paris, France (Roaring Twenties)'
 #pat_id = generate_mubert_token("coopersmith@gmail.com", "+16501234567")             
 #downloadURL = create_mubert_song(mubert_prompt, 120, f'low')

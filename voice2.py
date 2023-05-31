@@ -139,6 +139,7 @@ def generate_chapter_voice(storyObject, current_chap, audioType):
             ).get_result().content)
     voice_duration = int(librosa.get_duration(path=f'mp3_files/{thisTitle}'))+1
     print(f'This voice audio is {voice_duration} seconds long \n')
+    storyObject.durations.append(voice_duration)
     return voice_duration
         
 def compress_mp3(storyObject, chapterCount):
@@ -171,17 +172,17 @@ def vlc_player(storyObject):
 
 def compress_audio(storyObject, chapterCount):
     print("\n\n Compressing Chapters into 1 audio file . . . \n\n")
-    combined_sounds = AudioSegment.from_file(f'mp3_files/{storyObject.title}_chapter_{0}.wav', format = 'wav')
+    combined_sounds = AudioSegment.from_file(f'mp3_files/{storyObject.title}_chapter_0.wav', format = 'wav')
     print(f' \n\n Total chapters to compress: {storyObject.chapterCount} \n\n')
     i = 1
     while(i < chapterCount):
         combined_sounds += AudioSegment.from_file(f'mp3_files/{storyObject.title}_chapter_{i}.wav', format = 'wav')
         i += 1
     combined_sounds.export("mp3_files/{storyObject.title}_FULL.wav", format="wav")
-    
-#practice_compress();
+
 
 def slowdown_wav(filepath, percentage_val):
     audio = AudioSegment.from_file(filepath, format="wav")
     audio.speedup(playback_speed = percentage_val)
     audio.export(filepath, 'wav')
+
