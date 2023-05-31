@@ -31,5 +31,26 @@ with app.app_context():
 
     db.session.add_all([story1, story2])
     db.session.commit()
+
+    story1_chapter1 = Chapters(
+        story_id=story1.id,
+        chapter_count=1,
+        content='Hello from the other side ~~~'
+    )
+
+    story1_chapter2 = Chapters(
+        story_id=story1.id,
+        chapter_count=1,
+        content='I must have called it a thousand time ~~~'
+    )
+
+    story2_chapter1 = Chapters(
+        story_id=story2.id,
+        chapter_count=1,
+        content='Go e~~~azy on me babe ~~~'
+    )
+
+    db.session.add_all([story1_chapter1, story1_chapter2, story2_chapter1])
+    db.session.commit()
     
     print("finished initializing DB ...")

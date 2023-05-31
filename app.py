@@ -7,7 +7,6 @@ from distutils.log import debug
 from fileinput import filename
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-story_new_model = StoryInfo('','','','','','','','')
 
 app = Flask(__name__, template_folder='templates', static_url_path='/static')
 app.config['SQLALCHEMY_DATABASE_URI'] =\

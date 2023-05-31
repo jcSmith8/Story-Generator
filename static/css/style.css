@@ -1,3 +1,7 @@
+nav, footer{
+    z-index:100;
+}
+
 form{
     display:flex;
     flex-wrap:wrap;
@@ -93,7 +97,7 @@ form div{
     z-index: -1;
 }
 
-#list1:hover, #list2:hover {
+#list1:hover, #list2:hover,#list3:hover, #list4:hover {
     color: black;
 }
 
@@ -105,19 +109,27 @@ form div{
     transform: translateY(-62%) scale(2);
 }
 
-#list1 span:nth-child(2), #list2 span:nth-child(2) {
+#list3:hover span {
+    transform: translateY(-139%) scale(2);
+}
+
+#list4:hover span{
+    transform: translateY(-62%) scale(2);
+}
+
+#list1 span:nth-child(2), #list2 span:nth-child(2), #list3 span:nth-child(2), #list4 span:nth-child(2){
     --n: 1;
 }
 
-#list1 span:nth-child(3), #list2 span:nth-child(3) {
+#list1 span:nth-child(3), #list2 span:nth-child(3), #list3 span:nth-child(3), #list4 span:nth-child(3) {
     --n: 2;
 }
 
-#list1 span:nth-child(4), #list2 span:nth-child(4) {
+#list1 span:nth-child(4), #list2 span:nth-child(4), #list3 span:nth-child(4), #list4 span:nth-child(4) {
     --n: 3;
 }
 
-#list1 span:nth-child(5), #list2 span:nth-child(5){
+#list1 span:nth-child(5), #list2 span:nth-child(5), #list3 span:nth-child(5), #list4 span:nth-child(5){
     --n: 4;
 }
 
