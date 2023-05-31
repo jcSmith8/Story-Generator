@@ -289,7 +289,7 @@ class StoryInfo:
             pickle.dump(self, file)
             file.close()
 
-story_now = StoryInfo('','','','','','','','')   
+            
 
         
 

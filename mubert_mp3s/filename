@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MUBERT. 404 - Page not found</title>
+  <meta charset="utf-8"> 
+  <style>
+    html {
+      background: #000;
+      color: #fff;
+      font-family: monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+    }
+    a {
+      color: #ff1a65;
+    }
+  </style>
+</head>
+<body>
+  <img src="/404.svg" width="600" alt="404 - page not found" />
+  <p>
+    <br/><br/>Page not found
+    <br/><br/><a href="http://mubert.com">mubert.com</a>
+  </p>
+</body>
+</html>
