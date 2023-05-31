@@ -143,7 +143,7 @@ def create2():
             
             return render_template('form2.html', story=story_now)
         elif route == 'random':
-            random_start = random_init()
+            random_start = random_init(request.form['word_count'])
             story_now = eval(random_start)
 
             story_now.print_story_type()
