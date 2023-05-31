@@ -5,6 +5,8 @@ from story import StoryInfo, random_story, random_init, access_saved_story
 from voice import read_story
 from voice2 import generate_chapter_voice, generate_whole_voice, compress_audio
 import pickle
+import mubert
+from mubert import overlay_audio, generate_mubert_token, create_mubert_song, track_mubert_status, download_audio
 
 #       StoryInfo(characters, mainchar, place, time, length, wordCount, theme, audience)
 #newStory = StoryInfo(["John", "James"], "Chris", "California", "16 BC", 3, 1000, "happy theme", 12)
@@ -13,26 +15,30 @@ import pickle
 #newStory = StoryInfo(["John", "James"], "Chris", "Africa", "200s", 3, 200, "happy theme", 5)
 #newStory.print_story_type()
 
-# random_init = random_init()
-# randomStory = eval(random_init)
+random_init = random_init(300)
+randomStory = eval(random_init)
 
-# randomStory.print_story_type()
+randomStory.print_story_type()
 
-# randomStory.start_story()
-# randomStory.generate_title()
-# generate_chapter_voice(randomStory, 1, 'wav')
-# randomStory.add_chapter()
+randomStory.start_story()
+randomStory.generate_title()
+voice_duration_chap_1 = generate_chapter_voice(randomStory, 1, 'wav')
+randomStory.add_chapter()
 # randomStory.save_story()
-# generate_chapter_voice(randomStory, 2, 'wav')
+voice_duration_chap_2 = generate_chapter_voice(randomStory, 2, 'wav')
 # #randomStory.add_chapter()
 # #generate_chapter_voice(randomStory, 3, 'wav')
 
 
-# compress_audio(randomStory, 3)
+compress_audio(randomStory, 2)
 
-story_stuff = access_saved_story("New York Mysteries Uncovered.")
+downloadURL = create_mubert_song(randomStory.mubertPrompt, voice_duration_chap_1, f'low')
 
-story_stuff.print_all_story_info()
+download_audio(downloadURL, f'mubert_mp3s/', f'{randomStory.title}')
+overlay_audio(randomStory, f'mp3_files/{randomStory.title}_chapter_0.wav', f'mubert_mp3s/{randomStory.title}.wav')
+#newStory = access_saved_story("New York Mysteries Uncovered.")
+
+#story_stuff.print_all_story_info()
 #myStory = newStory.start_story()
 
 #newStory.generate_title()

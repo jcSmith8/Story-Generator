@@ -8,13 +8,18 @@ import requests
 import urllib.request
 import re
 from bs4 import BeautifulSoup
+from time import sleep
+import urllib.request
+import pydub
+from pydub import AudioSegment
+from pydub.playback import play
 
 MUBERT_TOKEN = os.getenv('MUBERT_TOKEN')
 MUBERT_COMPANY = os.getenv('MUBERT_COMPANY')
 MUBERT_LICENSE = os.getenv('MUBERT_LICENSE')
 #url = "https://api.mubert.com/v2/{MUBERT_COMPANY}"
 #email = "cooper@gmail.com" #@param {type:"string"}
-
+#pat = Y29vcGVyc21pdGgwODA4LjE5NTcwNTYyLmEzOGUzOTcxNTEwNTJhZGFhN2RiZTU1MTBkMTVhZmE1OGYxOThiYmQuMS4z.973aa6032378e159a6611624b987426ea833c26194f02fd5a4ee6ea44305a9d0
 # phone must be of form +16501234567 (+ and then 10 numbers)
 def generate_mubert_token(email, phone):
     r = httpx.post('https://api-b2b.mubert.com/v2/GetServiceAccess', 
@@ -34,57 +39,102 @@ def generate_mubert_token(email, phone):
     pat = rdata['data']['pat']
     print(f'Got token: {pat} \n')
     return pat
-    
-#create_new_mubert_user("coopersmith@gmail.com", "+16501234567")
 
-def create_mubert_song(email, phone, mubert_prompt):
-    token = generate_mubert_token(email, phone)
+
+def create_mubert_song(mubert_prompt, duration, intensity):
+    token = generate_mubert_token("coopersmith@gmail.com", "+16501234567")
     r = httpx.post('https://api-b2b.mubert.com/v2/TTMRecordTrack', 
     json={
             "method":"TTMRecordTrack",
             "params":
             {
                 "text":f'{mubert_prompt}',
+                #"pat":f'{token}',
                 "pat":f'{token}',
                 "mode":"track",
-                "duration":"60", 
+                "duration":duration,
+                "intensity":f'{intensity}',
+                "format":"wav", 
                 "bitrate":"192" ,
                 "mode":"loop"
             }
         })
     rdata = json.loads(r.text)
-    print(rdata, "\n")
+    #print(f'CREATEMUBERT ALL: {rdata} \n')
     assert rdata['status'] == 1, "failed to load"
-    download_link = rdata['data']['tasks'][0]['download_link']
-    print(f'Got download link: {download_link} \n')
-    return download_link
     
-downloadURL = create_mubert_song("cooper.smith@gmail.com", "+16501234567", "calm, soothing, slow tempo, background music.")
-
-def download_from_url(mubert_url, song_name):
-    url = f'{mubert_url}'
-    file_extension = '.mp3'   # Example .wav
-    r = requests.get(url)
-
-    # If extension does not exist in end of url, append it
-    if file_extension not in url.split("/")[-1]:
-            filename = f'{last_url_path}{file_extension}'
-    # Else take the last part of the url as filename
-    else:
-            filename = url.split("/")[-1]
-
-    with open(f'mubert_mp3s/{song_name}.mp3', 'wb') as f:
-            # You will get the file in base64 as content
-            f.write(r.content)
+    generation_progress = rdata['data']['tasks'][0]['task_status_code']
+    this_task_id = rdata['data']['tasks'][0]['task_id']
     
-    # r = requests.get(f'{mubert_url}')
-    # soup = BeautifulSoup(r.content, 'html.parser')
-
-    # for a in soup.find_all('a', href=re.compile(r'http.*\.mp3')):
-    #     filename = a['href'][a['href'].rfind("/")+1:]
-    #     print(f'opened: {filename} \n')
-    #     doc = requests.get(a['href'])
-    #     with open(f'mubert_mp3s/{filename}.mp3', 'wb') as f:
-    #         f.write(doc.content)
+    print(f'CREATEMUBERT: {generation_progress}')
+    
+    if generation_progress == 1:
+        print("Task in Progress \n")
+        in_progress = True
+    while(in_progress):
+        if(track_mubert_status(this_task_id, token) == 1):
+            print("\n waiting until track is done . . . \n")
+            sleep(5)
+        else:
+            break
+    full_path = f'mubert_mp3s/' + f'TEMP_FILE_NAME' + '.wav'
+    download_url = track_mubert_status(this_task_id, token)
+    urllib.request.urlretrieve(download_url, full_path)
+    print(download_url)
+    return download_url
+    
+def track_mubert_status(task_id, token):
+    #token = generate_mubert_token("coopersmith@gmail.com", "+16501234567")
+    
+    r = httpx.post('https://api-b2b.mubert.com/v2/TrackStatus',
+    json={
+        "method":"TrackStatus",
+        "params":
+        {
+            "pat":f'{token}'
+        }
+    })
+    rdata = json.loads(r.text)
+    
+    # Parse task list to find correct task by Task_ID
+    for task in rdata['data']['tasks']:
+        if(task['task_id'] == task_id):
+            print("FOUND THE TASK \n")
+            progress =  task['task_status_text'] 
+            task_id = task['task_id']
+            task_status = task['task_status_code']
+            download_link = task['download_link']
             
-download_from_url(downloadURL, "calm soothing background")
+    # print(f'TRACKMUBERT: {task_status} \n')
+    # print(f'TRACKMUBERT: {progress} \n')
+    # print(f'TRACKMUBERT: {task_id} \n')
+    #print(rdata)
+    if(task_status == 1):
+        return 1
+    else:
+        # print(f'TRACKMUBERT: {progress} \n')
+        # print(f'Got download link: {download_link} \n')
+        return download_link
+
+def download_audio(url, file_path, file_name):
+    full_path = file_path + file_name + '.wav'
+    urllib.request.urlretrieve(url, full_path)
+    
+    
+def overlay_audio(StoryInfoObj, voice_file, music_file):
+    voice_seg = AudioSegment.from_wav(f'{voice_file}')
+    music_seg = AudioSegment.from_wav(f'{music_file}')
+
+    soft_music_seg = music_seg - 17
+    overlay = voice_seg.overlay(music_seg, position=0)
+    overlay_soft = voice_seg.overlay(soft_music_seg, position=0)
+
+    overlay.export(f'overlay_wavs/overlaid_0sec_offset.wav', format="wav")
+    overlay_soft.export(f'overlay_wavs/{StoryInfoObj.title}.wav', format="wav")
+
+#mubert_prompt = f'Violin, Piano, Saxophone  , Struggle between passion and security , Paris, France (Roaring Twenties)'
+#pat_id = generate_mubert_token("coopersmith@gmail.com", "+16501234567")             
+#downloadURL = create_mubert_song(mubert_prompt, 120, f'low')
+#download_audio(downloadURL, f'mubert_mp3s/', f'{mubert_prompt}')
+
+#overlay_audio(f'mp3_files/African Journey Meeting Chris_chapter_0.wav', f'mubert_mp3s/NEW_FILE22.wav')

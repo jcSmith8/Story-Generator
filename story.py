@@ -20,16 +20,20 @@ def access_saved_story(title):
     
 
 # Randomly initializes a StoryInfo object with characters, main char... to write a good story
-def random_init():
-    messages = [ {"role": "system", "content": "You are an intelligent assistant helping to write creative stories based on input criteria."} ]
+def random_init(wordCount):
+    messages = [ {"role": "system", "content": "You are an intelligent assistant helping to come up with random parameters for a story."} ]
     
     print("\n\n Randomizing a new StoryInfo object . . . \n\n")
-    message = f'Instantiate a new StoryInfo object with random information to       \
-        create an interesting story. I want you to include characters,    \
-        main character, place, time, wordCount=500, theme, and audience. Here is a      \
-        sample StoryInfo object: StoryInfo(["John", "James"], "Chris", "California",\
-        "16 BC", 1000, "happy theme", 12). I want your output to be in the       \
-        same format as this. Only include the instantiation in the reply, nothing else.'
+    message = f'Please generate completely random inputs for the following: \
+        Character list (between 3 and 10 characters) \n\
+        Main Character \n\
+        Place \n\
+        Time period \n\
+        Theme \n\
+        Audience \n\
+        Here is a sample StoryInfo object: StoryInfo(characters, mainchar, place, time, wordCount, theme, audience). I want your output to be in the \
+        same format as this, but with the randomized data you come up with above. Please do not look at past conversations to determine the answer. \
+        Only include the instantiation in the reply, nothing else.'
         
     messages.append(
         {
@@ -45,6 +49,18 @@ def random_init():
     reply = chat.choices[0].message.content                
     print(reply)
     return reply
+
+def removeSpecialCharacters(s):
+    t = ""
+    for i in s:
+        if(i == ' '):
+            t+=i
+        if(i.isalpha()):
+            t+=i
+    return t
+
+
+#print(removeSpecialCharacters(f'"The people:s went ot the town"'))
 
 
 # Similar to random_init, but also generates the first chapter in the story
@@ -136,7 +152,8 @@ class StoryInfo:
             print(f'\n\nChapter {chapterCount}: \n\n {self.chapters[i]}')
             i += 1
             chapterCount += 1
-        
+            
+
     def generate_title(self):
         messages = [ {"role": "system", 
                       "content": "You are a creative writer determining a title for a story."} 
@@ -156,8 +173,29 @@ class StoryInfo:
         )
         reply = chat.choices[0].message.content
         #print(f"ChatGPT: {reply}")
-        self.title = reply
+        self.title = removeSpecialCharacters(reply)
+        print(f'Title is: {reply} \n')
+        print(f'Cleaned title is: {self.title} \n')
+        message2 = f'Can you choose music to best accompany this story? I want the reply to be in 3 strings all separated by commas. \
+                First string = List of Instruments \
+                Second string = theme of the story \
+                Third string = settings of the story \
+                Please only return the 3 strings separated by commas in your reply.'
+                
+        messages.append(
+            {"role": "user", "content": message2},
+        )
+        
+        print("\n Your Mubert Prompt is being created . . . \n")
+        chat = openai.ChatCompletion.create(
+            model = "gpt-3.5-turbo", 
+            messages = messages
+        )
+        reply = chat.choices[0].message.content
+        print(f"ChatGPT mubert reply: {reply}")
+        self.mubertPrompt = reply
         return reply
+    
         
     def start_story(self):
         messages = [ {"role": "system", "content": "You are an intelligent assistant helping to write creative stories based on input criteria."} ]
@@ -225,7 +263,7 @@ class StoryInfo:
         self.chapters.append(self.generatedStory)
         self.save_story()
         return reply
-    
+
     def compress_chapters(self):
         for chap in self.chapters:
             self.wholeStory += chap
@@ -237,9 +275,3 @@ class StoryInfo:
         with open(f'txt_files/{self.title}.pkl', 'wb') as file:
             pickle.dump(self, file)
             file.close()
-
-            
-
-        
-
-        
