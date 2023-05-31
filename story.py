@@ -21,18 +21,18 @@ def access_saved_story(title):
 
 # Randomly initializes a StoryInfo object with characters, main char... to write a good story
 def random_init(wordCount):
-    messages = [ {"role": "system", "content": "You are an intelligent assistant helping to come up with random parameters for a story."} ]
+    messages = [ {"role": "system", "content": "You are an intelligent assistant helping to come up with random parameters for a fictional story."} ]
     
     print("\n\n Randomizing a new StoryInfo object . . . \n\n")
-    message = f'Please generate completely random inputs for the following: \
+    message = f'Please generate inputs for the following categories. Choose from the options for audience: \n\
         Character list (between 3 and 10 characters) \n\
         Main Character \n\
         Place \n\
         Time period \n\
         Theme \n\
-        Audience \n\
-        Here is a sample StoryInfo object: StoryInfo(characters, mainchar, place, time, wordCount, theme, audience). I want your output to be in the \
-        same format as this, but with the randomized data you come up with above. Please do not look at past conversations to determine the answer. \
+        Audience (children, teens, young adults, adults) \n\
+        Here is a sample StoryInfo object: StoryInfo(characters, mainchar, place, time, wordCount, theme, audience) \n\
+        I want your output to be in the same format as this, but with the randomized data you come up with above. The only exception is for the wordCount, which is set to wordCount={wordCount}, but keep it in the instantiation reply. Please do not look at past conversations to determine the answer. \
         Only include the instantiation in the reply, nothing else.'
         
     messages.append(
@@ -58,10 +58,6 @@ def removeSpecialCharacters(s):
         if(i.isalpha()):
             t+=i
     return t
-
-
-#print(removeSpecialCharacters(f'"The people:s went ot the town"'))
-
 
 # Similar to random_init, but also generates the first chapter in the story
 def random_story():
@@ -176,11 +172,8 @@ class StoryInfo:
         self.title = removeSpecialCharacters(reply)
         print(f'Title is: {reply} \n')
         print(f'Cleaned title is: {self.title} \n')
-        message2 = f'Can you choose music to best accompany this story? I want the reply to be in 3 strings all separated by commas. \
-                First string = List of Instruments \
-                Second string = theme of the story \
-                Third string = settings of the story \
-                Please only return the 3 strings separated by commas in your reply.'
+        message2 = f'Can you choose music to best accompany this story? I want the reply to be in a concise format \
+            so that a music generator bot could best use it. Please keep your answer simple.'
                 
         messages.append(
             {"role": "user", "content": message2},
