@@ -4,7 +4,8 @@ import sqlite3
 import os
 from flask_sqlalchemy import SQLAlchemy
 from distutils.log import debug
-from fileinput import filename
+from voice2 import generate_chapter_voice, generate_whole_voice, compress_audio 
+from mubert import regenerate_music_high_intensity, regenerate_music_med_intensity, regenerate_music_low_intensity, overlay_audio
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -159,11 +160,27 @@ def create2():
 
 @app.route('/create/stage3', methods =["GET", "POST"])
 def create3():
+    global story_now
+    route = request.environ['HTTP_REFERER'].split('/')[-1]
+    print("POST FROM: ", route)
+    print(request.data)
+
     if request.method == "POST":
         # Create a table for the stories
-        print(request.form)
-        print(request.form['place'])
-        return render_template('form3.html')
+        if route == 'stage2':
+            print(request.form)
+            voice_chapter_duration = generate_chapter_voice(story_now, len(story_now.chapters), 'wav')
+            return render_template('form3.html', story = story_now, voice_chapter = voice_chapter_duration)
+        elif route == 'stage3':
+            
+            if request.data == b'':
+                regenerate_music_low_intensity(story_now, story_now.chapterCount)
+                regenerate_music_med_intensity(story_now, story_now.chapterCount)
+                regenerate_music_high_intensity(story_now, story_now.chapterCount)
+                return render_template('form3.html', story = story_now)
+            else:
+                overlay_audio(story_now, f'static/mp3_files/{story_now.title}_chapter_{story_now.chapterCount}.wav', f'static/mubert_mp3{story_now.title}_chapter_{story_now.title}.wav')
+
     
     return redirect(url_for('create'))
 

@@ -2,7 +2,7 @@ from ibm_watson import TextToSpeechV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 import os
 from dotenv import load_dotenv
-import vlc
+#import vlc
 from pydub import AudioSegment
 import ffmpeg
 import librosa
@@ -131,17 +131,18 @@ def generate_chapter_voice(storyObject, current_chap, audioType):
 
     thisTitle = f'{storyObject.title}_chapter_{current_chap}.wav'
 
-    with open(f'mp3_files/{thisTitle}','wb') as audio_file:
+    with open(f'static/mp3_files/{thisTitle}','wb') as audio_file:
         audio_file.write(text_to_speech.synthesize(
             storyObject.chapters[current_chap],
             voice = 'en-US_MichaelExpressive',
             accept = acceptAudio      
             ).get_result().content)
-    voice_duration = int(librosa.get_duration(path=f'mp3_files/{thisTitle}'))+1
+    voice_duration = int(librosa.get_duration(path=f'static/mp3_files/{thisTitle}'))+1
     print(f'This voice audio is {voice_duration} seconds long \n')
     storyObject.durations.append(voice_duration)
     return voice_duration
-        
+
+'''
 def compress_mp3(storyObject, chapterCount):
     infiles = []
     print("\n\n Compressing Chapters into 1 audio file . . . \n\n")
@@ -167,27 +168,24 @@ def compress_mp3(storyObject, chapterCount):
 def vlc_player(storyObject):
     media = vlc.MediaPlayer(filename)
     media.play()
-
+'''
 #vlc_player(f'"The Golden Tree's Wish"')
 
 def compress_audio(storyObject, chapterCount):
     print("\n\n Compressing Chapters into 1 audio file . . . \n\n")
-    combined_sounds = AudioSegment.from_file(f'mp3_files/{storyObject.title}_chapter_0.wav', format = 'wav')
+    combined_sounds = AudioSegment.from_file(f'static/mp3_files/{storyObject.title}_chapter_0.wav', format = 'wav')
     print(f' \n\n Total chapters to compress: {storyObject.chapterCount} \n\n')
     i = 1
     while(i < chapterCount):
-        combined_sounds += AudioSegment.from_file(f'mp3_files/{storyObject.title}_chapter_{i}.wav', format = 'wav')
+        combined_sounds += AudioSegment.from_file(f'static/mp3_files/{storyObject.title}_chapter_{i}.wav', format = 'wav')
         i += 1
-    combined_sounds.export("mp3_files/{storyObject.title}_FULL.wav", format="wav")
+    combined_sounds.export("static/mp3_files/{storyObject.title}_FULL.wav", format="wav")
 
 
 def slowdown_wav(filepath, percentage_val):
     audio = AudioSegment.from_file(filepath, format="wav")
     audio.speedup(playback_speed = percentage_val)
     audio.export(filepath, 'wav')
-<<<<<<< HEAD
 
-    
-=======
->>>>>>> 5ac564c5200795e721298ae6d170697e39d01b22
+
 

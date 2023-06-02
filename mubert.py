@@ -42,7 +42,7 @@ def generate_mubert_token(email, phone):
 
 
 def create_mubert_song(mubert_prompt, duration, intensity):
-    token = generate_mubert_token("coopersmith@gmail.com", "+16501234567")
+    token = generate_mubert_token("andyqin@gmail.com", "+16501234567")
     r = httpx.post('https://api-b2b.mubert.com/v2/TTMRecordTrack', 
     json={
             "method":"TTMRecordTrack",
@@ -77,7 +77,7 @@ def create_mubert_song(mubert_prompt, duration, intensity):
             sleep(5)
         else:
             break
-    full_path = f'mubert_mp3s/' + f'TEMP_FILE_NAME' + '.wav'
+    full_path = f'static/mubert_mp3s/' + f'TEMP_FILE_NAME' + '.wav'
     download_url = track_mubert_status(this_task_id, token)
     urllib.request.urlretrieve(download_url, full_path)
     print(download_url)
@@ -132,30 +132,30 @@ def overlay_audio(StoryInfoObj, voice_file, music_file):
     fileName = os.path.basename(os.path.normpath(music_file))
     fileNameTuple = os.path.splitext(fileName)
     fileName = fileNameTuple[0]
-    overlay_soft.export(f'overlay_wavs/{fileName}_soft.wav', format="wav")
-    overlay_softer.export(f'overlay_wavs/{fileName}_softer.wav', format="wav")
+    overlay_soft.export(f'static/overlay_wavs/{fileName}_soft.wav', format="wav")
+    overlay_softer.export(f'static/overlay_wavs/{fileName}_softer.wav', format="wav")
     
     
 def regenerate_music_low_intensity(StoryInfoObj, chapter):
     i = chapter-1    
     StoryInfoObj.regenerate_mubert()
     downloadURL = create_mubert_song(StoryInfoObj.mubertPrompt, StoryInfoObj.durations[i], f'low')
-    download_audio(downloadURL, f'mubert_mp3s/', f'{StoryInfoObj.title}_low')
-    overlay_audio(StoryInfoObj, f'mp3_files/{StoryInfoObj.title}_chapter_{i}.wav', f'mubert_mp3s/{StoryInfoObj.title}_low.wav')
+    download_audio(downloadURL, f'static/mubert_mp3s/', f'{StoryInfoObj.title}_low')
+    #overlay_audio(StoryInfoObj, f'static/mp3_files/{StoryInfoObj.title}_chapter_{i}.wav', f'static/mubert_mp3s/{StoryInfoObj.title}_low.wav')
     
 def regenerate_music_med_intensity(StoryInfoObj, chapter):
     i = chapter-1    
     StoryInfoObj.regenerate_mubert()
     downloadURL = create_mubert_song(StoryInfoObj.mubertPrompt, StoryInfoObj.durations[i], f'medium')
-    download_audio(downloadURL, f'mubert_mp3s/', f'{StoryInfoObj.title}_medium')
-    overlay_audio(StoryInfoObj, f'mp3_files/{StoryInfoObj.title}_chapter_{i}.wav', f'mubert_mp3s/{StoryInfoObj.title}_medium.wav')
+    download_audio(downloadURL, f'static/mubert_mp3s/', f'{StoryInfoObj.title}_medium')
+    #overlay_audio(StoryInfoObj, f'static/mp3_files/{StoryInfoObj.title}_chapter_{i}.wav', f'static/mubert_mp3s/{StoryInfoObj.title}_medium.wav')
     
 def regenerate_music_high_intensity(StoryInfoObj, chapter):
     i = chapter-1    
     StoryInfoObj.regenerate_mubert()
     downloadURL = create_mubert_song(StoryInfoObj.mubertPrompt, StoryInfoObj.durations[i], f'high')
-    download_audio(downloadURL, f'mubert_mp3s/', f'{StoryInfoObj.title}_high')
-    overlay_audio(StoryInfoObj, f'mp3_files/{StoryInfoObj.title}_chapter_{i}.wav', f'mubert_mp3s/{StoryInfoObj.title}_high.wav')
+    download_audio(downloadURL, f'static/mubert_mp3s/', f'{StoryInfoObj.title}_high')
+    #overlay_audio(StoryInfoObj, f'static/mp3_files/{StoryInfoObj.title}_chapter_{i}.wav', f'static/mubert_mp3s/{StoryInfoObj.title}_high.wav')
     
 
     

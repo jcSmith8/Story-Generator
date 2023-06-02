@@ -213,7 +213,7 @@ class StoryInfo:
     def start_story(self):
         messages = [ {"role": "system", "content": "You are an intelligent assistant helping to write creative stories based on input criteria."} ]
 
-        message = f'Write a creative story that has a minimum of {self.wordCount} words. \n \
+        message = f'Write a creative story that has a maximum of {self.wordCount} words. \n \
         I want the story to involve these characters: {self.characters} and revolve around  \
         main character: {self.mainchar}. \n This story will take place during this time:    \
         {self.time}, and this place: {self.place}. \n The story will have an overall theme  \
@@ -289,7 +289,7 @@ class StoryInfo:
             pickle.dump(self, file)
             file.close()
 
-            
+story_now = StoryInfo('','','','','','','')    
 
         
 
