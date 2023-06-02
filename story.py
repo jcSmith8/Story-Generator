@@ -24,27 +24,27 @@ def random_init(wordCount):
     messages = [ {"role": "system", "content": "You are an intelligent assistant helping to come up with random parameters for a fictional story."} ]
     
     print("\n\n Randomizing a new StoryInfo object . . . \n\n")
-    message = f'Please generate inputs for the following categories. Choose from the options for audience: \n\
+    message = f'Please generate inputs for the following categories. \n\
         Character list (between 3 and 10 characters) \n\
         Main Character \n\
         Place \n\
         Time period \n\
         Theme \n\
-        Audience (children, teens, young adults, adults) \n\
+        Audience \n\
         Here is a sample StoryInfo object: StoryInfo(characters, mainchar, place, time, wordCount, theme, audience) \n\
         I want your output to be in the same format as this, but with the randomized data you come up with above. The only exception is for the wordCount, which is set to wordCount={wordCount}, but keep it in the instantiation reply. Please do not look at past conversations to determine the answer. \
-        Only include the instantiation in the reply, nothing else.'
+        Only return the instantiation in the reply, nothing else.'
         
     messages.append(
         {
             "role": "user", 
-            "content": message
+            "content": message,
         },
     )
     chat = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo", 
         messages = messages,
-        temperature=0.7
+        temperature=0.9
     )
     reply = chat.choices[0].message.content                
     print(reply)
@@ -173,7 +173,7 @@ class StoryInfo:
         self.title = removeSpecialCharacters(reply)
         print(f'Title is: {reply} \n')
         print(f'Cleaned title is: {self.title} \n')
-        message2 = f'Can you choose music to best accompany this story? I want the reply to be in a concise format \
+        message2 = f'Can you choose background music for this story? I want the reply to be in a concise format \
             so that a music generator bot could best use it. Please keep your answer simple, and do not include example songs.'
                 
         messages.append(
@@ -195,7 +195,8 @@ class StoryInfo:
                       "content": "You are determining a good prompt for music generation."} 
                     ]
         message = f'Can you generate a good prompt for music generation based on this story? \n {self.generatedStory} \n\
-        Make sure to keep the reply short and concise in under 10 words.'
+        I want the music to be background music that matches the theme and place of the story. \n\
+            Make sure to keep the reply short and concise in under 10 words. '
         
         messages.append(
             {"role": "user", "content": message},
