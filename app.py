@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, url_for, redirect
 from story import StoryInfo, random_story, random_init, access_saved_story, removeSpecialCharacters
 import sqlite3
+import json
 import os
 from flask_sqlalchemy import SQLAlchemy
 from distutils.log import debug
@@ -8,7 +9,7 @@ from voice2 import generate_chapter_voice, generate_whole_voice, compress_audio
 from mubert import regenerate_music_high_intensity, regenerate_music_med_intensity, regenerate_music_low_intensity, overlay_audio
 
 basedir = os.path.abspath(os.path.dirname(__file__))
- 
+overlay_music = []
 story_now = StoryInfo('','','','','','','')
 app = Flask(__name__, template_folder='templates', static_url_path='/static')
 app.config['SQLALCHEMY_DATABASE_URI'] =\
@@ -198,26 +199,37 @@ def create3():
     global story_now
     route = request.environ['HTTP_REFERER'].split('/')[-1]
     print("POST FROM: ", route)
-    print(request.data)
+    print(request.data.decode('utf-8'))
 
     if request.method == "POST":
         # Create a table for the stories
         if route == 'stage2':
             print(request.form)
             voice_chapter_duration = generate_chapter_voice(story_now, len(story_now.chapters), 'wav')
-            return render_template('form3.html', story = story_now, voice_chapter = voice_chapter_duration)
+            return render_template('form3.html', story = story_now, overlays = [])
         elif route == 'stage3':
             
-            if request.data == b'':
-                regenerate_music_low_intensity(story_now, story_now.chapterCount)
-                regenerate_music_med_intensity(story_now, story_now.chapterCount)
-                regenerate_music_high_intensity(story_now, story_now.chapterCount)
-                return render_template('form3.html', story = story_now)
-            else:
-                overlay_audio(story_now, f'static/mp3_files/{story_now.title}_chapter_{story_now.chapterCount}.wav', f'static/mubert_mp3{story_now.title}_chapter_{story_now.title}.wav')
-
+            regenerate_music_low_intensity(story_now, story_now.chapterCount)
+            regenerate_music_med_intensity(story_now, story_now.chapterCount)
+            regenerate_music_high_intensity(story_now, story_now.chapterCount)
+            return render_template('form3.html', story = story_now, overlays = [])
+            
+                
     
     return redirect(url_for('create'))
+
+@app.route('/create/stage4', methods =["GET", "POST"])
+def create4():
+    global story_now
+    global overlay_music
+    #print(json.dumps(request.json["overlay"]))
+    if request.method == "POST":
+        print("creating overlay ...")
+        overlay_audio(story_now, f'static/mp3_files/{story_now.title}_chapter_{story_now.chapterCount-1}.wav', request.json["overlay"])
+        overlay_music = [request.json["overlay"][:-4].replace('static/mubert_mp3s/','') + "_soft.wav",request.json["overlay"][:-4].replace('static/mubert_mp3s/','') + "_softer.wav"]
+        return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+    
+    return render_template('form_overlay.html', story = story_now, overlays = overlay_music)
 
 @app.route('/edit', methods =["GET", "POST"])
 def edit():
