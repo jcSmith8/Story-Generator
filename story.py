@@ -258,7 +258,7 @@ class StoryInfo:
         prev_chapter = self.chapters[len(self.chapters)-1]
 
         message = f'I want you to add to this existing story. Here is the previous chapter \
-            of the story: {prev_chapter} I want you to write the next one. Please keep it around 500 words'
+            of the story: {prev_chapter} I want you to write the next one. Please keep it around {self.wordCount} words'
             
         messages.append(
             {"role": "user", "content": message},
@@ -288,8 +288,7 @@ class StoryInfo:
         with open(f'txt_files/{self.title}.pkl', 'wb') as file:
             pickle.dump(self, file)
             file.close()
-
-story_now = StoryInfo('','','','','','','')    
+   
 
         
 

@@ -22,7 +22,7 @@ $( document ).ready(() => {
             url: url,
             data: form.serialize(),
             success: function(data) {
-                  
+                location.reload();
                 // Ajax call completed successfully
                 //alert("Form Submited Successfully");
             },

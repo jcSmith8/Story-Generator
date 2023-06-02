@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, url_for, redirect
-from story import StoryInfo, random_story, random_init, access_saved_story, removeSpecialCharacters, story_now
+from story import StoryInfo, random_story, random_init, access_saved_story, removeSpecialCharacters
 import sqlite3
 import os
 from flask_sqlalchemy import SQLAlchemy
@@ -8,7 +8,8 @@ from voice2 import generate_chapter_voice, generate_whole_voice, compress_audio
 from mubert import regenerate_music_high_intensity, regenerate_music_med_intensity, regenerate_music_low_intensity, overlay_audio
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-
+ 
+story_now = StoryInfo('','','','','','','')
 app = Flask(__name__, template_folder='templates', static_url_path='/static')
 app.config['SQLALCHEMY_DATABASE_URI'] =\
         'sqlite:///' + os.path.join(basedir, 'story_database.db')
@@ -120,7 +121,7 @@ def create2():
                 title= story_now.title, 
                 place= story_now.place, 
                 time_period=story_now.time, 
-                characters=story_now.characters, 
+                characters=','.join(story_now.characters), 
                 main_character=story_now.mainchar,
                 word_count=story_now.wordCount,
                 theme=story_now.theme,
@@ -151,9 +152,43 @@ def create2():
 
             story_now.start_story()
             story_now.generate_title()
+            story_now.title = removeSpecialCharacters(story_now.title)
+            
+            story_new = Stories(
+                title= story_now.title, 
+                place= story_now.place, 
+                time_period=story_now.time, 
+                characters=','.join(story_now.characters), 
+                main_character=story_now.mainchar,
+                word_count=story_now.wordCount,
+                theme=story_now.theme,
+                audience=story_now.audience,
+                cover=request.form['cover'] if request.form['cover'] != '' else '',
+            )
+            
+            db.session.add(story_new)
+            db.session.commit()
+            
+            print('new story id: ', story_new.id)
+            story_now.story_id = story_new.id
+            
+            story_chapter_new = Chapters(
+                story_id = story_new.id,
+                chapter_count=len(story_now.chapters),
+                content=story_now.chapters[-1]
+            )
+            db.session.add(story_chapter_new)
+            db.session.commit()
             return render_template('form2.html', story=story_now)
         else:
             story_now.add_chapter()
+            story_chapter_new = Chapters(
+                story_id = story_new.id,
+                chapter_count=len(story_now.chapters),
+                content=story_now.chapters[-1]
+            )
+            db.session.add(story_chapter_new)
+            db.session.commit()
             return render_template('form2.html', story=story_now)
         
     return redirect(url_for('create'))
@@ -209,6 +244,7 @@ def stories():
     return render_template('form.html')
 
 if __name__ == "__main__":
+    
     os.system("python init_db.py")
     app.run(debug=True)
     
