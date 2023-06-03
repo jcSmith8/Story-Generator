@@ -206,13 +206,13 @@ def create3():
         if route == 'stage2':
             print(request.form)
             voice_chapter_duration = generate_chapter_voice(story_now, len(story_now.chapters), 'wav')
-            return render_template('form3.html', story = story_now, overlays = [])
+            return render_template('form3.html', story = story_now, overlays = [], music = False)
         elif route == 'stage3':
             
             regenerate_music_low_intensity(story_now, story_now.chapterCount)
             regenerate_music_med_intensity(story_now, story_now.chapterCount)
             regenerate_music_high_intensity(story_now, story_now.chapterCount)
-            return render_template('form3.html', story = story_now, overlays = [])
+            return render_template('form3.html', story = story_now, overlays = [], music= True)
             
                 
     

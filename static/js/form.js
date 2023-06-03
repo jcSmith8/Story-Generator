@@ -42,8 +42,11 @@ $( document ).ready(() => {
 // the selector will match all input controls of type :checkbox
     // and attach a click event handler 
     $(document).on('click', 'input[type="checkbox"]', function() {      
-        $('input[type="checkbox"]').not(this).prop('checked', false);   
-        $('#overlay-btn').attr("disabled", false);
+        $('input[type="checkbox"]').not(this).prop('checked', false); 
+        if($("input:checkbox:checked").val())  
+            $('#overlay-btn').attr("disabled", false);
+        else
+            $('#overlay-btn').attr("disabled", true);
     });
 
     $("#overlay-btn").click(function(ev) {
