@@ -62,14 +62,14 @@ $( document ).ready(() => {
             success: function(data) {
                   
                 // Ajax call completed successfully
-                alert("Form Submited Successfully");
+                //alert("Form Submited Successfully");
                 window.location.href = 'stage4'
                 $('#overlay-btn').attr("disabled", false);
             },
             error: function(data) {
                   
                 // Some error in ajax call
-                alert("some Error");
+                //alert("some Error");
                 $('#overlay-btn').attr("disabled", false);
             }
         });
