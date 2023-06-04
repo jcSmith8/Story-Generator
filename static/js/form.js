@@ -1,5 +1,7 @@
 let edit_btns = document.querySelectorAll('.edit-btn')
 let edit_area = document.querySelector('.story')
+const container = document.querySelector(".container");
+const cardTemplate = document.getElementById("card-template");
 let form = $("#form-2");
 console.log("loading scripts ...")
 console.log($('#overlay-btn'))
@@ -16,23 +18,54 @@ $( document ).ready(() => {
     $("#add-chap-btn").click(function(ev) {
         $('#add-chap-btn').attr("disabled", true);
         ev.preventDefault();
-        var form = $("#form-2");
-        var url = '/create/stage2'
+        let url = '/create/stage2'
         $.ajax({
             type: "POST",
             url: url,
-            data: form.serialize(),
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify({chapter:true}),
             success: function(data) {
-                location.reload();
+                
                 // Ajax call completed successfully
                 //alert("Form Submited Successfully");
                 $('#add-chap-btn').attr("disabled", false);
+                window.location.reload();
             },
             error: function(data) {
                   
                 // Some error in ajax call
                 //alert("some Error");
                 $('#add-chap-btn').attr("disabled", false);
+            }
+        });
+    });
+    $("#create-btn").click(function(ev) {
+        $('#create-btn').attr("disabled", true);
+        //ev.preventDefault();
+        $('#skeleton-container').css("display", "block");
+        $('#create-form').css("display", "none");
+        let form = $("#form-create");
+        let url = '/create/stage2'
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: form.serialize(),
+            success: function(response) {
+                // Ajax call completed successfully
+                //alert("Form Submited Successfully");
+               
+                $('#create-btn').attr("disabled", false);
+                console.log(response)
+                window.location.href = url
+                
+            },
+            error: function(data) {
+                  
+                // Some error in ajax call
+                alert("some Error");
+                $('#create-btn').attr("disabled", false);
+                window.location.reload();
             }
         });
     });

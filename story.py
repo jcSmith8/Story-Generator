@@ -31,7 +31,7 @@ def random_init(wordCount):
         Time period \n\
         Theme \n\
         Audience \n\
-        Here is a sample StoryInfo object: StoryInfo(characters, mainchar, place, time, wordCount, theme, audience) \n\
+        Here is a sample StoryInfo object: StoryInfo(characters, mainChar, place, time, wordCount, theme, audience) \n\
         I want your output to be in the same format as this, but with the randomized data you come up with above. The only exception is for the wordCount, which is set to wordCount={wordCount}, but keep it in the instantiation reply. Please do not look at past conversations to determine the answer. \
         Only return the instantiation in the reply, nothing else.'
         
@@ -117,10 +117,10 @@ def random_story():
 
 class StoryInfo:
     # Later on, will be initialized after submit button is pressed on the website
-    def __init__(self, characters, mainchar, place, time, wordCount, theme, audience):
+    def __init__(self, characters, mainChar, place, time, wordCount, theme, audience):
         print("\n\n New StoryInfo object created! \n\n")
         self.characters = characters
-        self.mainchar = mainchar
+        self.mainChar = mainChar
         self.place = place
         self.time = time
         self.wordCount = wordCount
@@ -130,16 +130,17 @@ class StoryInfo:
         self.chapterCount = 0
         self.wholeStory = ''
         self.durations = []
+        self.story_id = 0
         
     
     def print_story_type(self):
-        print("\nCharacters:   ", self.characters, "\n\nMain character:   ", self.mainchar, "\n")
+        print("\nCharacters:   ", self.characters, "\n\nMain character:   ", self.mainChar, "\n")
         print("Your story will take place in:   ", self.place, "during ", self.time, "\n")
         print("Story theme:", self.theme, "\n")
         print("Story audience:", self.audience, "\n")
         
     def print_all_story_info(self):
-        print("Characters:   ", self.characters, "\nMain character:   ", self.mainchar, "\n")
+        print("Characters:   ", self.characters, "\nMain character:   ", self.mainChar, "\n")
         print("Your story will take place in:   ", self.place, "during ", self.time, "\n")
         print("Story theme:", self.theme, "\n")
         print("Story audience:", self.audience, "\n")
@@ -216,7 +217,7 @@ class StoryInfo:
 
         message = f'Write a creative story that has a maximum of {self.wordCount} words. \n \
         I want the story to involve these characters: {self.characters} and revolve around  \
-        main character: {self.mainchar}. \n This story will take place during this time:    \
+        main character: {self.mainChar}. \n This story will take place during this time:    \
         {self.time}, and this place: {self.place}. \n The story will have an overall theme  \
         similar to {self.theme} and be friendly for audiences that are {self.audience}      \
         years old. Please make sure to keep the story as long as the word count describes.  \

@@ -12,10 +12,16 @@
   }
   
   /* Handle */
+ 
   ::-webkit-scrollbar-thumb {
     border-radius: 8px;
     background: #888;
     display: none;
+  }
+
+  .horizontal-scroll::-webkit-scrollbar-thumb {
+    background: #555;
+    display: block;
   }
   
   /* Handle on hover */

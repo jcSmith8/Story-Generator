@@ -32,15 +32,15 @@
                         <img src="{{'/static/images/' + story.cover if story.cover !='' else '/static/images/placeholder.png'}}" class = "rounded-t-xl h-full w-full">
                     </div>
                     <div class = "p-6 bg-white rounded-b-xl h-60 w-full border-t border-grey-500 overflow-auto">
-                        <a href="#" ><h2 class = "text-xl truncate ..."> {{story.title}} </h2></a>
-                        <a href="#" ><p class = "text-lg truncate ..."> {{story.main_character}} </p></a>
-                        <a href="#" ><p class = "text-lg"> {{story.place}} </p></a>
-                        <a href="#" ><p class = "text-lg"> {{story.time_period}} </p></a>
-                        <a href="#" ><p class = "text-lg"> {{story.theme}} </p></a>
+                        <a href="{{url_for('story', story_name = story.title)}}" ><h2 class = "text-xl truncate ..."> {{story.title}} </h2></a>
+                        <a href="{{url_for('story', story_name = story.title)}}" ><p class = "text-lg truncate ..."> {{story.main_character}} </p></a>
+                        <a href="{{url_for('story', story_name = story.title)}}" ><p class = "text-lg"> {{story.place}} </p></a>
+                        <a href="{{url_for('story', story_name = story.title)}}" ><p class = "text-lg"> {{story.time_period}} </p></a>
+                        <a href="{{url_for('story', story_name = story.title)}}" ><p class = "text-lg"> {{story.theme}} </p></a>
                         <div class = "w-auto">
                             <ul>
                                 <li class = "font-semibold rounded-xl" id = "list4">
-                                    <a href="{{url_for('edit')}}">Edit This Story</a>
+                                    <a href="{{url_for('edit', story_name = story.title)}}">Edit This Story</a>
                                     <span></span><span></span><span></span><span></span>
                                 </li>
                             </ul>

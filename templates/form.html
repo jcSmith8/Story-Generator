@@ -1,13 +1,18 @@
 
 {% extends "base.html" %}
-
+{% block title %}
+    Create
+{% endblock %}
 
 {% block content %}
 
-<div class=" mt-2 px-6 py-6 bg-gray-100 rounded-xl overflow-auto" >
-    <h2 class = "mb-6 text-2xl text-center"> Let's Make a New Story! </h2>
+{% include "skeleton.html"%}
+<div class=" mt-2 px-6 py-6 bg-gray-100 rounded-xl overflow-auto" id="create-form">
+    <div class="w-full">
+        <h2 class = "mb-6 text-2xl text-center"> Let's Make a New Story! </h2>
+    </div>
     <div class = "w-full max-w-lg grid gap-3 place-items-center place-content-center" >
-        <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" action='/create/stage2' method="POST">
+        <form id = "form-create" class="bg-white shadow-md rounded px-3 pt-3 pb-3 mb-4" action='/create/stage2' method="POST">
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="place">
                     Place
@@ -24,7 +29,7 @@
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="characters">
                     Characters
                 </label>
-                <textarea name="characters" id="" cols="50" rows="4" placeholder="characters separated comma"></textarea>
+                <textarea class="" name="characters" id="" cols="50" rows="4" placeholder="characters separated comma"></textarea>
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="main_character">
@@ -50,13 +55,13 @@
                 </label>
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='text' name='audience' placeholder = 'Audience'>
             </div>
-            <div class="mb-4">
+            <div class="mb-4 w-full mr-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="cover">
                     Cover 
                 </label>
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='file' name='cover' placeholder = 'Theme'>
             </div>
-            <button  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' >Create a story</button>
+            <button id = "create-btn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' >Create a story</button>
         </form>
     </div>
 </div>
