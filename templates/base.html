@@ -10,10 +10,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/title.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/skeleton.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script
-        defer
-        src="{{ url_for('static', filename='js/form.js') }}"
-    ></script>
+    {% block form %}
+        <script
+            defer
+            src="{{ url_for('static', filename='js/form.js') }}"
+        ></script>
+    {% endblock %}
 </head>
 <body class = "h-screen overflow-x-hidden overflow-y-auto">
     <nav class = "sticky w-screen top-0 py-8 px-8 flex justify-between items-center border-b border-gray-200">

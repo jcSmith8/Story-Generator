@@ -1,0 +1,25 @@
+<div class="flex-col overflow-auto rounded-xl p-3" id="skeleton-container">
+    <div class="flex justify-start overflow-auto rounded-xl" id = "horizontal-skeleton">
+        
+            <div class="h-full min-w-fit m-2 px-6 py-6 bg-gray-100 rounded-xl overflow-auto" id = "chapter-container-skeleton">
+                <h2 class = "mb-6 text-2xl text-center"></h2>
+                <div class = "w-full max-w-lg grid gap-3 place-items-center place-content-center" >
+                    <form id='form-2' class="shadow-md rounded px-3 pt-3 pb-3 m-2 rounded-xl bg-slate-200" action='/create/stage3' method="POST">
+                        <label class = "skeleton w-full mb-3 text-xl text-center " for="story"></label>
+                        <textarea class = "skeleton w-full h-full p-2 bg-slate-50"name="story" id="story" cols="50" rows="15" disabled>
+                           
+                        </textarea>
+                        <div class="flex justify-between">
+                            
+                            <button  class="skeleton-footer m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' >Regenerate Chapter</button>
+                            <button  class="skeleton-footer m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' >Generate Voice-Over</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        
+    </div>
+    <div>
+        <button  class="skeleton-footer my-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' >Add a Chapter</button>
+    </div>
+</div>

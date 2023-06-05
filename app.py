@@ -84,12 +84,12 @@ def create():
             characters=request.form['characters'], 
             main_character=request.form['place'],
             theme=request.form['theme'],
-            cover=request.form['cover'] if request.form['cover'] != '' else '',
+            cover='' if not 'cover' in request.form.keys() else request.form['cover'],
         )
         db.session.add(story_now)
         db.session.commit()
            
-        return render_template('form2.html', story=story_now)
+        return render_template('form2.html', story=story_now, create_mode = True)
     
     return render_template('form.html')
 
@@ -97,14 +97,14 @@ def create():
 def create2():
     global story_now
     print(request.form)
-    print(request.environ)
+    #print(request.environ)
     route = request.environ['HTTP_REFERER'].split('/')[-1]
     print("POST FROM: ", route)
     if request.method == "POST":
         # Create a table for the stories
         
         
-        if route == 'create':
+        if route == 'create' or 'main_character' in request.form.keys():
             story_now = StoryInfo(
                 characters=request.form['characters'],
                 mainChar=request.form['main_character'],
@@ -127,7 +127,7 @@ def create2():
                 word_count=story_now.wordCount,
                 theme=story_now.theme,
                 audience=story_now.audience,
-                cover = '' if not 'cover' in request.form.keys else request.form['cover']
+                cover = '' if not 'cover' in request.form.keys() else request.form['cover']
             )
             
             db.session.add(story_new)
@@ -144,8 +144,8 @@ def create2():
             db.session.add(story_chapter_new)
             db.session.commit()
             
-            return render_template('form2.html', story=story_now)
-        elif route == 'random':
+            return render_template('form2.html', story=story_now, create_mode= True)
+        elif route == 'random' or 'word_count' in request.form.keys():
             random_start = random_init(request.form['word_count'])
             story_now = eval(random_start)
 
@@ -180,8 +180,9 @@ def create2():
             )
             db.session.add(story_chapter_new)
             db.session.commit()
-            return render_template('form2.html', story=story_now)
+            return render_template('form2.html', story=story_now, create_mode=False)
         else:
+            
             story_now.add_chapter()
             story_chapter_new = Chapters(
                 story_id = story_now.story_id,
@@ -190,7 +191,7 @@ def create2():
             )
             db.session.add(story_chapter_new)
             db.session.commit()
-            return render_template('form2.html', story=story_now)
+            return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
         
     if story_now == None:
         return redirect(url_for('create'))
@@ -202,16 +203,15 @@ def create3():
     global story_now
     route = request.environ['HTTP_REFERER'].split('/')[-1]
     print("POST FROM: ", route)
-    print(request.data.decode('utf-8'))
+    print(request.form)
 
     if request.method == "POST":
         # Create a table for the stories
         if route == 'stage2':
-            print(request.form)
-            voice_chapter_duration = generate_chapter_voice(story_now, len(story_now.chapters), 'wav')
+            voice_chapter_duration = generate_chapter_voice(story_now, int(request.form['voice']), 'wav')
             return render_template('form3.html', story = story_now, overlays = [])
         elif route == 'stage3':
-            if  request.get_json():
+            if  'chapter' in request.form.keys():
                 story_now.add_chapter()
                 story_chapter_new = Chapters(
                     story_id = story_now.story_id,
@@ -220,16 +220,23 @@ def create3():
                 )
                 db.session.add(story_chapter_new)
                 db.session.commit()
+                return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+            elif 'voice' in request.form.keys():
+                voice_chapter_duration = generate_chapter_voice(story_now, int(request.form['voice']), 'wav')
                 return render_template('form3.html', story = story_now, overlays = [])
-            else:
+            elif 'music' in request.form.keys():
                 regenerate_music_low_intensity(story_now, story_now.chapterCount)
                 regenerate_music_med_intensity(story_now, story_now.chapterCount)
                 regenerate_music_high_intensity(story_now, story_now.chapterCount)
                 return render_template('form3.html', story = story_now, overlays = [])
-            
+            else:
+                return render_template('form3.html', story = story_now, overlays = [])
                 
-    
-    return redirect(url_for('create'))
+    if story_now == None:
+        return redirect(url_for('create'))
+    else:
+        return render_template('form3.html', story=story_now, overlays = [])
+   
 
 @app.route('/create/stage4', methods =["GET", "POST"])
 def create4():
@@ -274,6 +281,7 @@ def edit(story_name):
         return render_template('form2.html')
     
     return render_template('edit.html', story = story, chapters = chapters)
+
 
 if __name__ == "__main__":
     os.system("python init.py")

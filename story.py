@@ -32,8 +32,8 @@ def random_init(wordCount):
         Theme \n\
         Audience \n\
         Here is a sample StoryInfo object: StoryInfo(characters, mainChar, place, time, wordCount, theme, audience) \n\
-        I want your output to be in the same format as this, but with the randomized data you come up with above. The only exception is for the wordCount, which is set to wordCount={wordCount}, but keep it in the instantiation reply. Please do not look at past conversations to determine the answer. \
-        Only return the instantiation in the reply, nothing else.'
+        I want your output to be in the same format as this, but with random data. The only exception is for the wordCount, which is set to wordCount={wordCount}, but keep it in the instantiation reply. Please do not look at past conversations to determine the answer. \n\
+        The response should be the object only.'
         
     messages.append(
         {
@@ -48,7 +48,10 @@ def random_init(wordCount):
     )
     reply = chat.choices[0].message.content                
     print(reply)
-    return reply
+    if len(reply.split('\n')) == 1:
+        return reply
+    else:
+        return reply.split('\n')[-1]
 
 def removeSpecialCharacters(s):
     t = ""
@@ -131,6 +134,7 @@ class StoryInfo:
         self.wholeStory = ''
         self.durations = []
         self.story_id = 0
+        self.voice_over = [False]
         
     
     def print_story_type(self):
@@ -212,7 +216,7 @@ class StoryInfo:
         print(f"New Mubert prompt: {reply} \n\n")
         self.mubertPrompt = reply
         
-    def start_story(self):
+    def start_story(self, generate = 1):
         messages = [ {"role": "system", "content": "You are an intelligent assistant helping to write creative stories based on input criteria."} ]
 
         message = f'Write a creative story that has a maximum of {self.wordCount} words. \n \
@@ -239,8 +243,12 @@ class StoryInfo:
         reply = chat.choices[0].message.content
         #print(f"ChatGPT: {reply}")
         self.generatedStory = reply
-        self.chapters.append(self.generatedStory)
-        self.chapterCount += 1
+        self.chapterCount += generate
+        if generate == 1:
+            self.chapters.append(self.generatedStory)
+        else:
+            self.chapters[generate] = self.generatedStory
+        
         
         return reply
     
@@ -276,6 +284,7 @@ class StoryInfo:
         #print(f"ChatGPT: {reply}")
         self.generatedStory = reply
         self.chapters.append(self.generatedStory)
+        self.voice_over.append(False)
         self.save_story()
         return reply
 

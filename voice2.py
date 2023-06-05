@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from pydub import AudioSegment
 import ffmpeg
 import librosa
+from story import StoryInfo
 
 #HARD TO INSTALL FFMPEG
 # Must install ffmpeg to your LOCAL environment, whatever you are in
@@ -115,7 +116,7 @@ def generate_whole_voice(storyObject, audioType):
             accept = acceptAudio      
             ).get_result().content)
         
-def generate_chapter_voice(storyObject, current_chap, audioType):
+def generate_chapter_voice(storyObject:StoryInfo, current_chap, audioType):
     
     authenticator = IAMAuthenticator(api_key)
     text_to_speech = TextToSpeechV1(
@@ -126,6 +127,7 @@ def generate_chapter_voice(storyObject, current_chap, audioType):
     current_chap = current_chap-1
     
     acceptAudio = get_audio_format(audioType)
+    storyObject.voice_over[current_chap] = True
 
     print(f'\n Generating Chapter {current_chap} Voiceover . . . \n')
 
