@@ -8,8 +8,12 @@ import pickle
 import mubert
 from mubert import overlay_two_wavs, overlay_audio, generate_mubert_token, create_mubert_song, track_mubert_status, download_audio, regenerate_music_low_intensity, regenerate_music_med_intensity, regenerate_music_high_intensity
 
-#       StoryInfo(characters, mainchar, place, time, length, wordCount, theme, audience)
-#newStory = StoryInfo(["John", "James"], "Chris", "California", "16 BC", 3, 1000, "happy theme", 12)
+
+# StoryInfo(characters, mainchar, place, time, length, wordCount, theme, audience)
+newStory = StoryInfo(["John", "James"], "Chris", "California", "16 BC", 1000, "happy theme", 12)
+newStory.chapterCount = 2
+newStory.title = "Betrayed A Roaring Revenge"
+compress_audio(newStory)
 #newStory = StoryInfo(["John", "James"], "Chris", "Arizona", "2020s", 3, 500, "happy theme", 21)
 #newStory = StoryInfo(["John", "James"], "Chris", "Europe", "1800s", 3, 600, "happy theme", 7)
 #newStory = StoryInfo(["John", "James"], "Chris", "Africa", "200s", 3, 200, "happy theme", 5)
@@ -41,7 +45,7 @@ from mubert import overlay_two_wavs, overlay_audio, generate_mubert_token, creat
 # downloadURL = create_mubert_song(randomStory.mubertPrompt, voice_duration_chap_1, f'low')
 # download_audio(downloadURL, f'mubert_mp3s/', f'{randomStory.title}')
 # overlay_audio(randomStory, f'mp3_files/{randomStory.title}_chapter_0.wav', f'mubert_mp3s/{randomStory.title}.wav')
-overlay_two_wavs(f'static/mp3_files/Eternal Small Town Bonds_chapter_0.wav', f'static/mubert_mp3s/Eternal Small Town Bonds_medium.wav')
+# overlay_two_wavs(f'static/mp3_files/Eternal Small Town Bonds_chapter_0.wav', f'static/mubert_mp3s/Eternal Small Town Bonds_medium.wav')
 # regenerate_music_low_intensity(randomStory, 1)
 # regenerate_music_med_intensity(randomStory, 1)
 # regenerate_music_high_intensity(randomStory, 1)

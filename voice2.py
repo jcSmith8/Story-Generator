@@ -173,21 +173,23 @@ def vlc_player(storyObject):
 '''
 #vlc_player(f'"The Golden Tree's Wish"')
 
-def compress_audio(storyObject, chapterCount):
+def compress_audio(storyObject):
     print("\n\n Compressing Chapters into 1 audio file . . . \n\n")
     combined_sounds = AudioSegment.from_file(f'static/mp3_files/{storyObject.title}_chapter_0.wav', format = 'wav')
     print(f' \n\n Total chapters to compress: {storyObject.chapterCount} \n\n')
     i = 1
-    while(i < chapterCount):
+    while(i < storyObject.chapterCount):
         combined_sounds += AudioSegment.from_file(f'static/mp3_files/{storyObject.title}_chapter_{i}.wav', format = 'wav')
         i += 1
-    combined_sounds.export("static/mp3_files/{storyObject.title}_FULL.wav", format="wav")
+    combined_sounds.export(f'static/full_chapters/{storyObject.title}_FULL.wav', format="wav")
 
 
 def slowdown_wav(filepath, percentage_val):
     audio = AudioSegment.from_file(filepath, format="wav")
     audio.speedup(playback_speed = percentage_val)
     audio.export(filepath, 'wav')
+
+
 
 
 

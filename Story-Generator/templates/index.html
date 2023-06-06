@@ -1,0 +1,57 @@
+{% extends 'base.html'%}
+
+{% block title %}
+    Welcome
+{% endblock %}
+
+{% block content %}
+    <div class="mt-2 px-8 py-6 bg-gray-100 rounded-xl overflow-auto" id ="story-board">
+        
+        <h2 class = "mb-6 text-2xl text-center"> Recent Stories </h2>
+        <ul class = "flex justify-between">
+            <li class = "mb-2 font-semibold  rounded-xl" id = "list1">
+                <a href="{{url_for('create')}}">Create a new story</a>
+                <span></span><span></span><span></span><span></span>
+            </li>
+            <li class = "mb-2 font-semibold  rounded-xl" id = "list3">
+                <a href="{{url_for('random')}}">Build Random</a>
+                <span></span><span ></span><span></span><span></span>
+            </li>
+            <li class = "mb-2 font-semibold  rounded-xl" id = "list2">
+                <a href="{{url_for('stories')}}">Build on Old</a>
+                <span></span><span ></span><span></span><span></span>
+            </li>
+        </ul>
+        <div class = "grid grid-cols-1 md:grid-cols-3 grid-rows-3 md:grid-rows-1 gap-3 place-content-around grid-flow-col-dense " id="grid">
+           
+            {% for story in stories%}
+                
+                <div style="min-width: 256px;">
+                    
+                    <div class = "bg-white rounded-t-xl h-60 w-full">
+                        <img src="{{'/static/images/' + story.cover if story.cover !='' else '/static/images/placeholder.png'}}" class = "rounded-t-xl h-full w-full">
+                    </div>
+                    <div class = "p-6 bg-white rounded-b-xl h-60 w-full border-t border-grey-500 overflow-auto">
+                        <a href="{{url_for('story', story_name = story.title)}}" ><h2 class = "text-xl truncate ..."> {{story.title}} </h2></a>
+                        <a href="{{url_for('story', story_name = story.title)}}" ><p class = "text-lg truncate ..."> {{story.main_character}} </p></a>
+                        <a href="{{url_for('story', story_name = story.title)}}" ><p class = "text-lg"> {{story.place}} </p></a>
+                        <a href="{{url_for('story', story_name = story.title)}}" ><p class = "text-lg"> {{story.time_period}} </p></a>
+                        <a href="{{url_for('story', story_name = story.title)}}" ><p class = "text-lg"> {{story.theme}} </p></a>
+                        <div class = "w-auto">
+                            <ul>
+                                <li class = "font-semibold rounded-xl" id = "list4">
+                                    <a href="{{url_for('edit', story_name = story.title)}}">Edit This Story</a>
+                                    <span></span><span></span><span></span><span></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <span>
+                    </span>
+                </div>
+                
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

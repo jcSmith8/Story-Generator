@@ -4,7 +4,7 @@ $( document ).ready(() => {
     
     $("#create-btn").click(function(ev) {
         $('#create-btn').attr("disabled", true);
-        //ev.preventDefault();
+        ev.preventDefault();
         $('#skeleton-container').css("display", "block");
         $('#create-form').css("display", "none");
         let form = $("#form-create");

@@ -12,6 +12,7 @@ $( document ).ready(() => {
         
     });
     $("#add-chap-btn").click(function(ev) {
+        ev.preventDefault();
         $('#add-chap-btn').attr("disabled", true);
         
         for(let i = 0; i < $(this).val() ; i++){
@@ -22,18 +23,18 @@ $( document ).ready(() => {
         
         $('#skeleton-container').css("display", "block");
         $('#create-form2').css("display", "none");
-        ev.preventDefault();
+        
         let url = '/create/stage3'
         $.ajax({
             type: "POST",
             url: url,
             data: $('#form-chapter').serialize(),
             success: function(data) {
-                
+                console.log(data)
                 // Ajax call completed successfully
-                //alert("Form Submited Successfully");
+                alert("Form Submited Successfully");
                 $('#add-chap-btn').attr("disabled", false);
-                window.location.reload();
+                window.location.href = url;
             },
             error: function(data) {
                   
@@ -46,8 +47,12 @@ $( document ).ready(() => {
     });
 
     $(".voice-btn").click(function(ev) {
+        ev.preventDefault();
+        form = $('#form-voice-'+ $(this).val())
         $('.voice-btn').attr("disabled", true);
-        
+        console.log($(this).val());
+        console.log(form);
+        console.log(form.serialize());
         for(let i = 0; i < $(this).val() ; i++){
             let chapter_clone = $('#chapter-container-skeleton').clone(true)
             console.log(chapter_clone)
@@ -56,14 +61,12 @@ $( document ).ready(() => {
         
         $('#skeleton-container').css("display", "block");
         $('#create-form2').css("display", "none");
-        ev.preventDefault();
+        
         let url = '/create/stage3'
         $.ajax({
             type: "POST",
             url: url,
-            contentType: "application/json",
-            dataType: "json",
-            data: JSON.stringify({chapter:$(this).val()}),
+            data: form.serialize(),
             success: function(data) {
                 
                 // Ajax call completed successfully
@@ -82,6 +85,7 @@ $( document ).ready(() => {
     });
 
     $("#music-btn").click(function(ev) {
+        ev.preventDefault();
         $('#music-btn').attr("disabled", true);
         
         for(let i = 0; i < $(this).val() ; i++){
@@ -92,7 +96,7 @@ $( document ).ready(() => {
         
         $('#skeleton-container').css("display", "block");
         $('#create-form2').css("display", "none");
-        ev.preventDefault();
+       
         let url = '/create/stage3'
         $.ajax({
             type: "POST",
@@ -118,6 +122,7 @@ $( document ).ready(() => {
     });
 
     $("#overlay-btn").click(function(ev) {
+        ev.preventDefault();
         //ev.preventDefault();
         $('#overlay-btn').attr("disabled", true);
         let form = $("#form-2");

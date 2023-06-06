@@ -32,14 +32,14 @@
                             
                             {% print("create-mode: " , create_mode) %}
                             {% if create_mode == True %}
-                                <input value={{story.wordCount}}  type="number" name="word_count">
-                                <input value={{story.place}}  type='text' name='place' >       
+                                <input value="{{story.wordCount}}"  type="number" name="word_count">
+                                <input value="{{story.place}}"  type='text' name='place' >       
                                 <input value={{story.time}}  type='number' name='time_period' >
-                                <textarea value={{story.characters}} class="" name="characters" id="" cols="50" rows="4" ></textarea>
-                                <input value={{story.mainChar}} type='text' name='main_character'>
-                                <input value={{story.theme}} type='text' name='theme' >
-                                <input value={{story.audience}} type='text' name='audience' >
-                                <input value={{story.cover}} type='file' name='cover' >
+                                <textarea name="characters" id="" cols="50" rows="4" >{{story.characters}}</textarea>
+                                <input value="{{story.mainChar}}" type='text' name='main_character'>
+                                <input value="{{story.theme}}" type='text' name='theme' >
+                                <input value="{{story.audience}}" type='text' name='audience' >
+                                <input value="{{story.cover}}" type='file' name='cover' >
                             {% else %}
                                 <input value={{story.wordCount}}  type="number" name="word_count">
                             {% endif %}
