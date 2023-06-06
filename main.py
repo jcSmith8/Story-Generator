@@ -13,7 +13,9 @@ from mubert import overlay_two_wavs, overlay_audio, generate_mubert_token, creat
 newStory = StoryInfo(["John", "James"], "Chris", "California", "16 BC", 1000, "happy theme", 12)
 newStory.chapterCount = 2
 newStory.title = "Betrayed A Roaring Revenge"
-compress_audio(newStory)
+newStory.mubertPrompt = "calm, soothing"
+regenerate_music_low_intensity(newStory, 1)
+# compress_audio(newStory)
 #newStory = StoryInfo(["John", "James"], "Chris", "Arizona", "2020s", 3, 500, "happy theme", 21)
 #newStory = StoryInfo(["John", "James"], "Chris", "Europe", "1800s", 3, 600, "happy theme", 7)
 #newStory = StoryInfo(["John", "James"], "Chris", "Africa", "200s", 3, 200, "happy theme", 5)

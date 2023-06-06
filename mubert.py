@@ -42,7 +42,7 @@ def generate_mubert_token(email, phone):
 
 
 def create_mubert_song(mubert_prompt, duration, intensity):
-    token = generate_mubert_token("andyqin2001@gmail.com", "+16501234567")
+    token = generate_mubert_token("yqin2@scu.edu", "+16501234567")
     r = httpx.post('https://api-b2b.mubert.com/v2/TTMRecordTrack', 
     json={
             "method":"TTMRecordTrack",

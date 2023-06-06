@@ -124,6 +124,7 @@ $( document ).ready(() => {
 
     $("#music-btn").click(function(ev) {
         ev.preventDefault();
+        form = $('#form-music');
         $('#music-btn').attr("disabled", true);
         
         for(let i = 0; i < $(this).val() ; i++){
@@ -139,9 +140,7 @@ $( document ).ready(() => {
         $.ajax({
             type: "POST",
             url: url,
-            contentType: "application/json",
-            dataType: "json",
-            data: JSON.stringify({music:true}),
+            data: form.serialize(),
             success: function(data) {
                 
                 // Ajax call completed successfully
@@ -154,7 +153,7 @@ $( document ).ready(() => {
                 // Some error in ajax call
                 alert("some Error");
                 $('#music-btn').attr("disabled", false);
-                window.location.reload();
+                window.location.href = '/create/stage3';
             }
         });
     });

@@ -21,11 +21,10 @@
                             <textarea class = "w-full h-full p-2 bg-slate-50"name="story" id="story" cols="50" rows="15" disabled>
                                 {{story.chapters[i]}}
                             </textarea>
-                            <input value={{i+1}} style="display:none;" type="number" name="voice">
                             <div class="flex justify-between">
                                 
                                 <button  id = "regenerate-btn" class="m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' >Regenerate Chapter</button>
-                                <button  class="m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' value={{i}}>Generate Voice-Over</button>
+                                
                             </div>
                         </form>
                         <form id='form-regenerate' action='/' method="POST" style="display:none;">
@@ -52,7 +51,12 @@
             <form id='form-chapter' action='/create/stage3' method="POST" style="display:none;">
                 <input value={{story.chapterCount}} style="display:none;" type="number" name="chapter">
             </form>
+            <form id='form-voice-over' action='/create/stage3' method="POST" style="display:none;">
+                <input value={{story.chapterCount}} style="display:none;" type="number" name="voice">
+            </form>
+            <input value={{story.chapterCount}} style="display:none;" type="number" name="voice">
             <button  id = "add-chap-btn" class="my-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' value = {{story.chapterCount}}>Add a Chapter</button>
+            <button  id = "voice-over-btn" class="m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' value={{i}}>Generate Voice-Over</button>
         </div>
     </div>
 {% endblock content %}

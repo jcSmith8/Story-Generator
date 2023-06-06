@@ -20,7 +20,7 @@
   }
 
   ::-webkit-scrollbar-thumb:horizontal{
-    display:block;
+    display:block
   }
 
   .horizontal-scroll::-webkit-scrollbar-thumb {
@@ -46,8 +46,14 @@ body > :not(footer){
 nav{
     background-color: white;
 }
+
 nav, footer{
     z-index:1000;
+}
+
+footer{
+    position:fixed;
+    bottom:0;
 }
 
 
@@ -74,7 +80,9 @@ img{
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
 }
 
-
+#footer{
+    margin-top: auto;
+}
 
 
 #story-board ul {

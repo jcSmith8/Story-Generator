@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from distutils.log import debug
 from voice2 import generate_chapter_voice, generate_whole_voice, compress_audio 
 from mubert import regenerate_music_high_intensity, regenerate_music_med_intensity, regenerate_music_low_intensity, overlay_audio
-
+from random import randint
 basedir = os.path.abspath(os.path.dirname(__file__))
 create_mode = False
 overlay = False
@@ -74,26 +74,19 @@ def contact():
 @app.route('/create', methods =["GET", "POST"])
 def create():
     global story_now
-    print(request.environ)
+    print(request.form)
     route = request.environ['REQUEST_URI'].split('/')[-1]
-    print(route)
+    print("FROM: ", route)
     if request.method == "POST":
         # Create a table for the stories
-        story_now = Stories(
-            story_name= '', 
-            place=request.form['place'], 
-            time_period=request.form['time_period'], 
-            characters=request.form['characters'], 
-            main_character=request.form['place'],
-            theme=request.form['theme'],
-            cover='' if not 'cover' in request.form.keys() else request.form['cover'],
-        )
-        db.session.add(story_now)
-        db.session.commit()
+        random_start = random_init(randint(25,300))
+        story_now = eval(random_start)
+
+        story_now.print_story_type()
            
-        return render_template('form2.html', story=story_now, create_mode = True)
+        return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
     
-    return render_template('form.html')
+    return render_template('form.html', story = story_now)
 
 @app.route('/create/stage2', methods =["GET", "POST"])
 def create2():
@@ -218,8 +211,9 @@ def create3():
     if request.method == "POST":
         # Create a table for the stories
         if route == 'stage2':
-            voice_chapter_duration = generate_chapter_voice(story_now, int(request.form['voice']), 'wav')
-            return render_template('form3.html', story = story_now, overlays = overlay)
+            for i in range(1, story_now.chapterCount+1):
+                voice_chapter_duration = generate_chapter_voice(story_now, i, 'wav')
+            return redirect(url_for('create3'))
         elif route == 'stage3':
             if 'chapter' in request.form.keys():
                 story_now.add_chapter()
@@ -239,7 +233,7 @@ def create3():
                 regenerate_music_low_intensity(story_now, story_now.chapterCount)
                 regenerate_music_med_intensity(story_now, story_now.chapterCount)
                 regenerate_music_high_intensity(story_now, story_now.chapterCount)
-                return render_template('form3.html', story = story_now, overlays = overlay)
+                return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
             elif 'combine-voice' in request.form.keys():
                 compress_audio(story_now)
                 return json.dumps({'success':True}), 200, {'ContentType':'application/json'}

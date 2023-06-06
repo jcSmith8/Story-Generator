@@ -18,57 +18,123 @@
         <h2 class = "mb-6 text-2xl text-center"> Let's Make a New Story! </h2>
     </div>
     <div class = "w-full max-w-lg grid gap-3 place-items-center place-content-center" >
-        <form id = "form-create" class="flex justify-around bg-white shadow-md rounded px-3 pt-3 pb-3 mb-4" action='/create/stage2' method="POST">
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="place">
-                    Place
-                </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='text' name='place' placeholder = 'Place'>
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="time_period">
-                    Time Period
-                </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='number' name='time_period' placeholder = 'Time Period'>
-            </div>
-            <div class="m-4 w-full">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="characters">
-                    Characters
-                </label>
-                <textarea class="w-full p-2" name="characters" id="" cols="50" rows="4" placeholder="characters separated comma"></textarea>
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="main_character">
-                    Main Character
-                </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='text' name='main_character' placeholder = 'Main Character'>
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="word_count">
-                    Word Count
-                </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='number' name='word_count' placeholder = 'Length'>
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="theme">
-                    Theme
-                </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='text' name='theme' placeholder = 'Theme'>
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="audience">
-                    Audience
-                </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='text' name='audience' placeholder = 'Audience'>
-            </div>
-            <div class="mb-4 w-full mr-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="cover">
-                    Cover 
-                </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='file' name='cover' placeholder = 'Theme'>
-            </div>
-            <button id = "create-btn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' >Create a story</button>
-        </form>
+        {% if story.wordCount == 0: %}
+            <form id = "form-create" class="flex justify-around bg-white shadow-md rounded px-3 pt-3 pb-3 mb-4" action='/create/stage2' method="POST">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="place">
+                        Place
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='text' name='place' placeholder = 'Place'>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="time_period">
+                        Time Period
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='text' name='time_period' placeholder = 'Time Period'>
+                </div>
+                <div class="m-4 w-full">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="characters">
+                        Characters
+                    </label>
+                    <textarea class="w-full p-2" name="characters" id="" cols="50" rows="4" placeholder="characters separated comma"></textarea>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="main_character">
+                        Main Character
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='text' name='main_character' placeholder = 'Main Character'>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="word_count">
+                        Word Count
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='number' name='word_count' placeholder = 'Length'>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="theme">
+                        Theme
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='text' name='theme' placeholder = 'Theme'>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="audience">
+                        Audience
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='text' name='audience' placeholder = 'Audience'>
+                </div>
+                <div class="mb-4 w-full mr-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="cover">
+                        Cover 
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='file' name='cover' placeholder = 'Theme'>
+                </div>
+                <form method = "POST" style="display:none;" id = "random-set-form">
+                    <input value = "{{story.title}}" type="text" style="display:none;">
+                </form>
+                    <div class = "flex justify-center">
+                        <button id = "random-set-btn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2" style='margin-top:10px;' type='submit' >Generate Random Setups</button>
+                        <button id = "create-btn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-2" style='margin-top:10px;' type='submit' >Create a story</button>
+                    </div>    
+            </form>
+        {% else %}
+            <form id = "form-create" class="flex justify-around bg-white shadow-md rounded px-3 pt-3 pb-3 mb-4" action='/create/stage2' method="POST">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="place">
+                        Place
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='text' name='place' placeholder = 'Place' value = "{{story.place}}">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="time_period">
+                        Time Period
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='text' name='time_period' placeholder = 'Time Period' value = {{story.time}}>
+                </div>
+                <div class="m-4 w-full">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="characters">
+                        Characters
+                    </label>
+                    <textarea class="w-full p-2" name="characters" id="" cols="50" rows="4" placeholder="characters separated comma">{{ story.characters if story.characters is not iterable else ', '.join(story.characters ) }}</textarea>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="main_character">
+                        Main Character
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='text' name='main_character' placeholder = 'Main Character' value = "{{story.mainChar}}">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="word_count">
+                        Word Count
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='number' name='word_count' placeholder = 'Length' value = "{{story.wordCount}}">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="theme">
+                        Theme
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='text' name='theme' placeholder = 'Theme' value = "{{story.theme}}">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="audience">
+                        Audience
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='text' name='audience' placeholder = 'Audience' value = "{{story.audience}}">
+                </div>
+                <div class="mb-4 w-full mr-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="cover">
+                        Cover 
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='file' name='cover' value = "{{story.cover}}">
+                </div>
+                <form method = "POST" style="display:none;" id = "random-set-form">
+                    <input value = "{{story.title}}" type="text" style="display:none;">
+                </form>
+                    <div class = "flex justify-center">
+                        <button id = "random-set-btn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2" style='margin-top:10px;' type='submit' >Generate Random Setups</button>
+                        <button id = "create-btn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-2" style='margin-top:10px;' type='submit' >Create a story</button>
+                    </div>    
+            </form>
+        {% endif %}
     </div>
 </div>
 

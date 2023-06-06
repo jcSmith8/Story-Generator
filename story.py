@@ -20,8 +20,15 @@ def access_saved_story(title):
     
 
 # Randomly initializes a StoryInfo object with characters, main char... to write a good story
+# Randomly initializes a StoryInfo object with characters, main char... to write a good story
 def random_init(wordCount):
     messages = [ {"role": "system", "content": "You are an intelligent assistant helping to come up with random parameters for a fictional story."} ]
+    
+    rand_themes = open('static/txt_files/themes.txt').read().splitlines()
+    rand_story_theme = random.choice(rand_themes)
+    rand_audiences = open('static/txt_files/audiences.txt').read().splitlines()
+    rand_story_audience = random.choice(rand_audiences)
+
     
     print("\n\n Randomizing a new StoryInfo object . . . \n\n")
     message = f'Please generate inputs for the following categories. \n\
@@ -29,11 +36,12 @@ def random_init(wordCount):
         Main Character \n\
         Place \n\
         Time period \n\
-        Theme \n\
-        Audience \n\
-        Here is a sample StoryInfo object: StoryInfo(characters, mainChar, place, time, wordCount, theme, audience) \n\
-        I want your output to be in the same format as this, but with random data. The only exception is for the wordCount, which is set to wordCount={wordCount}, but keep it in the instantiation reply. Please do not look at past conversations to determine the answer. \n\
-        The response should be the object only.'
+        Do not generate random data for wordCount, theme, or audience. These values will be set to \
+        wordCount={wordCount}, theme={rand_story_theme}, audience = {rand_story_audience}. Keep these values in the instantiation reply. \
+        Please do not look at past conversations to determine the answer. \n\
+        StoryInfo(characters, mainChar, place, time, wordCount, theme, audience) \n\
+        I want your output to be in the exact same format as the line above. \
+        The response should be the object only and on one line.'
         
     messages.append(
         {

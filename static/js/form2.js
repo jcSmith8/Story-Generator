@@ -36,6 +36,42 @@ $( document ).ready(() => {
         });
     });
 
+    $("#voice-over-btn").click(function(ev) {
+        console.log("regenerate button clicked ...")
+        console.log($('#form-regenerate'))
+        $('#voice-over-btn').attr("disabled", true);
+        
+        for(let i = 0; i < $(this).val() ; i++){
+            let chapter_clone = $('#chapter-container-skeleton').clone(true)
+            console.log(chapter_clone)
+            chapter_clone.appendTo('#horizontal-skeleton')
+        }
+        
+        $('#skeleton-container').css("display", "block");
+        $('#create-form2').css("display", "none");
+        ev.preventDefault();
+        let url = '/create/stage3'
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: $('#form-voice-over').serialize(),
+            success: function(data) {
+                
+                // Ajax call completed successfully
+                //alert("Form Submited Successfully");
+                $('#voice-over-btn').attr("disabled", false);
+                window.location.href = url;
+            },
+            error: function(data) {
+                  
+                // Some error in ajax call
+                alert("some Error");
+                $('#voice-over-btn').attr("disabled", false);
+                window.location.reload();
+            }
+        });
+    });
+
     $("#regenerate-btn").click(function(ev) {
         console.log("regenerate button clicked ...")
         console.log($('#form-regenerate'))
