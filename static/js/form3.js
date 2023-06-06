@@ -84,6 +84,44 @@ $( document ).ready(() => {
         });
     });
 
+    $("#combine-voice-btn").click(function(ev) {
+        ev.preventDefault();
+        form = $('#form-combine-voice');
+        $('#combine-voice-btn').attr("disabled", true);
+        console.log($(this).val());
+        console.log(form);
+        console.log(form.serialize());
+        for(let i = 0; i < $(this).val() ; i++){
+            let chapter_clone = $('#chapter-container-skeleton').clone(true)
+            console.log(chapter_clone)
+            chapter_clone.appendTo('#horizontal-skeleton')
+        }
+        
+        $('#skeleton-container').css("display", "block");
+        $('#create-form2').css("display", "none");
+        
+        let url = '/create/stage3'
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: form.serialize(),
+            success: function(data) {
+                
+                // Ajax call completed successfully
+                alert("Form Submited Successfully");
+                $('.voice-btn').attr("disabled", false);
+                window.location.href = '/create/stage3';
+            },
+            error: function(data) {
+                  
+                // Some error in ajax call
+                alert("some Error");
+                $('.voice-btn').attr("disabled", false);
+                window.location.reload();
+            }
+        });
+    });
+
     $("#music-btn").click(function(ev) {
         ev.preventDefault();
         $('#music-btn').attr("disabled", true);

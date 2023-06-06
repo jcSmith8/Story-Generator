@@ -45,6 +45,22 @@
         <div class="h-full mt-2 px-6 py-6 bg-gray-100 rounded-xl overflow-auto" >
             
             <div class = "w-full max-w-lg grid gap-3 place-items-center place-content-center" ></div>
+                <form id='form-music-2' class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"  method="POST">
+                    <label class = "w-full mb-3 text-xl text-center" for="story">{{story.title}} FULL AUDIO</label>
+                    
+                    <div class="my-2 flex justify-center items-center flex-wrap w-full">
+                        <audio controls class = "self-start">
+                            <source src="/static/full_chapters/{{story.title+'_FULL.wav'}}" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+        <div class="h-full mt-2 px-6 py-6 bg-gray-100 rounded-xl overflow-auto" >
+            
+            <div class = "w-full max-w-lg grid gap-3 place-items-center place-content-center" ></div>
                 <form id='form-music' class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"  method="POST">
                     <label class = "w-full mb-3 text-xl text-center" for="story">{{story.title}}</label>
                     
@@ -70,7 +86,7 @@
                         <label for=""><input type="checkbox" value="static/mubert_mp3s/{{story.title+'_high.wav'}}">High Intensity</label>
                     </div>
                     <input value={{story.chapterCount}} style="display:none;" type="number" name="music">
-                    {% if overlay: %}
+                    {% if overlays: %}
                         <div class="flex justify-between">
                             <button  id = "music-btn" class="m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' >Generate Music</button>
                             <button  id = "overlay-btn" class="m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' >Combine Music + Voice</button>
@@ -87,7 +103,11 @@
             <form id='form-chapter' action='/create/stage3' method="POST" style="display:none;">
                 <input value={{story.chapterCount}} style="display:none;" type="number" name="chapter">
             </form>
-            <button  id = "add-chap-btn" class="my-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' >Add a Chapter</button>
+            <form id='form-combine-voice' action='/create/stage3' method="POST" style="display:none;">
+                <input value={{story.chapterCount}} style="display:none;" type="number" name="combine-voice">
+            </form>
+            <button  id = "add-chap-btn" class="m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' >Add a Chapter </button>
+            <button  id = "combine-voice-btn" class="m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' >Combine Voice-Over</button>
         </div>
     </div>
 {% endblock content %}

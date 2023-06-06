@@ -154,7 +154,7 @@ def regenerate_music_low_intensity(StoryInfoObj, chapter):
     i = chapter-1    
     #StoryInfoObj.regenerate_mubert()
     print(f'Generating low intensity music for prompt: {StoryInfoObj.mubertPrompt} \n')
-    downloadURL = create_mubert_song(StoryInfoObj.mubertPrompt, StoryInfoObj.durations[i], f'low')
+    downloadURL = create_mubert_song(StoryInfoObj.mubertPrompt, sum(StoryInfoObj.durations, StoryInfoObj.chapterCount * 2), f'low')
     download_audio(downloadURL, f'static/mubert_mp3s/', f'{StoryInfoObj.title}_low')
     #overlay_audio(StoryInfoObj, f'static/mp3_files/{StoryInfoObj.title}_chapter_{i}.wav', f'static/mubert_mp3s/{StoryInfoObj.title}_low.wav')
     
@@ -162,7 +162,7 @@ def regenerate_music_med_intensity(StoryInfoObj, chapter):
     i = chapter-1    
     #StoryInfoObj.regenerate_mubert()
     print(f'Generating medium intensity music for prompt: {StoryInfoObj.mubertPrompt} \n')
-    downloadURL = create_mubert_song(StoryInfoObj.mubertPrompt, StoryInfoObj.durations[i], f'medium')
+    downloadURL = create_mubert_song(StoryInfoObj.mubertPrompt, sum(StoryInfoObj.durations, StoryInfoObj.chapterCount * 2), f'medium')
     download_audio(downloadURL, f'static/mubert_mp3s/', f'{StoryInfoObj.title}_medium')
     #overlay_audio(StoryInfoObj, f'static/mp3_files/{StoryInfoObj.title}_chapter_{i}.wav', f'static/mubert_mp3s/{StoryInfoObj.title}_medium.wav')
     
@@ -170,7 +170,7 @@ def regenerate_music_high_intensity(StoryInfoObj, chapter):
     i = chapter-1    
     #StoryInfoObj.regenerate_mubert()
     print(f'Generating high intensity music for prompt: {StoryInfoObj.mubertPrompt} \n')
-    downloadURL = create_mubert_song(StoryInfoObj.mubertPrompt, StoryInfoObj.durations[i], f'high')
+    downloadURL = create_mubert_song(StoryInfoObj.mubertPrompt, sum(StoryInfoObj.durations, StoryInfoObj.chapterCount * 2), f'high')
     download_audio(downloadURL, f'static/mubert_mp3s/', f'{StoryInfoObj.title}_high')
     #overlay_audio(StoryInfoObj, f'static/mp3_files/{StoryInfoObj.title}_chapter_{i}.wav', f'static/mubert_mp3s/{StoryInfoObj.title}_high.wav')
     

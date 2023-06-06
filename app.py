@@ -240,6 +240,9 @@ def create3():
                 regenerate_music_med_intensity(story_now, story_now.chapterCount)
                 regenerate_music_high_intensity(story_now, story_now.chapterCount)
                 return render_template('form3.html', story = story_now, overlays = overlay)
+            elif 'combine-voice' in request.form.keys():
+                compress_audio(story_now)
+                return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
             else:
                 return render_template('form3.html', story = story_now, overlays = overlay)
                 
@@ -256,7 +259,7 @@ def create4():
     #print(json.dumps(request.json["overlay"]))
     if request.method == "POST":
         print("creating overlay ...")
-        overlay_audio(story_now, f'static/mp3_files/{story_now.title}_chapter_{story_now.chapterCount-1}.wav', request.json["overlay"])
+        overlay_audio(story_now, f'static/full_chapters/{story_now.title}_FULL.wav', request.json["overlay"])
         overlay_music = [request.json["overlay"][:-4].replace('static/mubert_mp3s/','') + "_soft.wav",request.json["overlay"][:-4].replace('static/mubert_mp3s/','') + "_softer.wav"]
         return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
     
