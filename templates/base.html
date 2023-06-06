@@ -18,7 +18,7 @@
     {% endblock %}
 </head>
 <body class = "h-screen overflow-x-hidden overflow-y-auto">
-    <nav class = "sticky w-screen top-0 py-8 px-8 flex justify-between items-center border-b border-gray-200">
+    <nav id = "nav-main" class = "h-24 sticky w-screen top-0 py-1 px-5 flex justify-between items-center border-b border-gray-200">
         <div class="logo-holder logo-6">
             <a href="/">
               <h3>AIdio <span class = "rounded-lg">Book</span></h3>
@@ -32,12 +32,12 @@
         </div>
     </nav>
     
-    <div class="h-3/4 min-h-min max-h-fit w-auto flex justify-center px-3 py-3 mb-2 overflow-auto">
+    <div class="h-auto w-auto flex justify-center px-3 py-3 mb-2 overflow-auto">
         {% block content %}
         {% endblock %}
     </div>
 
-    <footer class= "w-screen py-6 px-6 flex justify-between bg-blue-200">
+    <footer class= "w-screen py-6 px-6 flex justify-between bg-blue-200" id="footer">
         <div class= "w-2/3 pr-10">
             <h2 class = "text-lg mb-5 font-semibold text-gray-400"> About </h2>
 

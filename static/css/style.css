@@ -19,6 +19,10 @@
     display: none;
   }
 
+  ::-webkit-scrollbar-thumb:horizontal{
+    display:block;
+  }
+
   .horizontal-scroll::-webkit-scrollbar-thumb {
     background: #555;
     display: block;
@@ -31,22 +35,21 @@
   }
 
 body{
-    height:100%;
-    display:flex;
-    flex-direction: column;
+    position: relative;
+    min-height:100vh;
+
 }
 
 body > :not(footer){
     flex: 1 0 auto;
 }
-
+nav{
+    background-color: white;
+}
 nav, footer{
-    z-index:100;
+    z-index:1000;
 }
 
-.footer {
-    flex-shrink: 0;
-}
 
 form{
     display:flex;
@@ -70,6 +73,8 @@ img{
     text-transform: uppercase;
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
 }
+
+
 
 
 #story-board ul {
