@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}
+    Create2
+{% endblock %}
+{% block form %}
+        <script
+            defer
+            src="{{ url_for('static', filename='js/form2.js') }}"
+        ></script>
+{% endblock %}
+{% block content %}
+    {% include "skeleton2.html" %}
+    <div class="flex-col overflow-auto rounded-xl p-3" id = "create-form2">
+        <div class="flex justify-start overflow-auto rounded-xl" id = "horizontal-scroll">
+            {% for i in range(story.chapterCount): %}
+                <div class="h-full min-w-fit m-2 px-6 py-6 bg-gray-100 rounded-xl overflow-auto" >
+                    <h2 class = "mb-6 text-2xl text-center">{{story.title}}</h2>
+                    <div class = "w-full max-w-lg grid gap-3 place-items-center place-content-center" >
+                        <form id='form-2' class="shadow-md rounded px-3 pt-3 pb-3 m-2 rounded-xl bg-slate-200" action='/create/stage3' method="POST">
+                            <label class = "w-full mb-3 text-xl text-center " for="story">Chapter {{i+1}}</label>
+                            <textarea class = "w-full h-full p-2 bg-slate-50"name="story" id="story" cols="50" rows="15" disabled>
+                                {{story.chapters[i]}}
+                            </textarea>
+                            <div class="flex justify-between">
+                                
+                                <button  id = "regenerate-btn" class="m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' >Regenerate Chapter</button>
+                                
+                            </div>
+                        </form>
+                        <form id='form-regenerate' action='/' method="POST" style="display:none;">
+                            
+                            {% print("create-mode: " , create_mode) %}
+                            {% if create_mode == True %}
+                                <input value="{{story.wordCount}}"  type="number" name="word_count">
+                                <input value="{{story.place}}"  type='text' name='place' >       
+                                <input value={{story.time}}  type='number' name='time_period' >
+                                <textarea name="characters" id="" cols="50" rows="4" >{{story.characters}}</textarea>
+                                <input value="{{story.mainChar}}" type='text' name='main_character'>
+                                <input value="{{story.theme}}" type='text' name='theme' >
+                                <input value="{{story.audience}}" type='text' name='audience' >
+                                <input value="{{story.cover}}" type='file' name='cover' >
+                            {% else %}
+                                <input value={{story.wordCount}}  type="number" name="word_count">
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div>
+            <form id='form-chapter' action='/create/stage3' method="POST" style="display:none;">
+                <input value={{story.chapterCount}} style="display:none;" type="number" name="chapter">
+            </form>
+            <form id='form-voice-over' action='/create/stage3' method="POST" style="display:none;">
+                <input value={{story.chapterCount}} style="display:none;" type="number" name="voice">
+            </form>
+            <input value={{story.chapterCount}} style="display:none;" type="number" name="voice">
+            <button  id = "add-chap-btn" class="my-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' value = {{story.chapterCount}}>Add a Chapter</button>
+            <button  id = "voice-over-btn" class="m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' value={{i}}>Generate Voice-Over</button>
+        </div>
+    </div>
+{% endblock content %}

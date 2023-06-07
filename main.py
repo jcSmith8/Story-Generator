@@ -6,17 +6,31 @@ from voice import read_story
 from voice2 import generate_chapter_voice, generate_whole_voice, compress_audio
 import pickle
 
+<<<<<<< Updated upstream
 #       StoryInfo(characters, mainchar, place, time, length, wordCount, theme, audience)
 #newStory = StoryInfo(["John", "James"], "Chris", "California", "16 BC", 3, 1000, "happy theme", 12)
+=======
+
+# StoryInfo(characters, mainchar, place, time, length, wordCount, theme, audience)
+# newStory = StoryInfo(["John", "James"], "Chris", "California", "16 BC", 1000, "happy theme", 12)
+>>>>>>> Stashed changes
 #newStory = StoryInfo(["John", "James"], "Chris", "Arizona", "2020s", 3, 500, "happy theme", 21)
 #newStory = StoryInfo(["John", "James"], "Chris", "Europe", "1800s", 3, 600, "happy theme", 7)
 #newStory = StoryInfo(["John", "James"], "Chris", "Africa", "200s", 3, 200, "happy theme", 5)
 #newStory.print_story_type()
 
+<<<<<<< Updated upstream
 # random_init = random_init()
 # randomStory = eval(random_init)
 
 # randomStory.print_story_type()
+=======
+
+# initializes a random StoryInfo() call with random info
+random_init = random_init(300)
+randomStory = eval(random_init)
+randomStory.print_story_type()
+>>>>>>> Stashed changes
 
 # randomStory.start_story()
 # randomStory.generate_title()
