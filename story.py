@@ -31,16 +31,16 @@ def random_init(wordCount):
 
     
     print("\n\n Randomizing a new StoryInfo object . . . \n\n")
-    message = f'Please generate inputs for the following categories. \n\
+    message = f'I want you to generate random inputs for the following categories: \n\
         Character list (between 3 and 10 characters) \n\
         Main Character \n\
-        Place \n\
-        Time period \n\
         Do not generate random data for wordCount, theme, or audience. These values will be set to \
-        wordCount={wordCount}, theme={rand_story_theme}, audience = {rand_story_audience}. Keep these values in the instantiation reply. \
+        wordCount={wordCount}, theme={rand_story_theme}, audience = {rand_story_audience} \
+        Generate a random setting: a city, destination, or landmark, and store it in the place parameter \
+        Generate a random time period between 2000 BC and 3000 AD. It can be a historical event or a general time period. Store this value in the time parameter. \n\
         Please do not look at past conversations to determine the answer. \n\
         StoryInfo(characters, mainChar, place, time, wordCount, theme, audience) \n\
-        I want your output to be in the exact same format as the line above. \
+        I want your output to be in the exact same format as the line above. Keep all 7 parameters in the reply, with the correct name.  \
         The response should be the object only and on one line.'
         
     messages.append(
@@ -52,7 +52,7 @@ def random_init(wordCount):
     chat = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo", 
         messages = messages,
-        temperature=0.9
+        temperature=0.7
     )
     reply = chat.choices[0].message.content                
     print(reply)
@@ -233,8 +233,7 @@ class StoryInfo:
         {self.time}, and this place: {self.place}. \n The story will have an overall theme  \
         similar to {self.theme} and be friendly for audiences that are {self.audience}      \
         years old. Please make sure to keep the story as long as the word count describes.  \
-        If the word count is greater than 500, please do not end the story. Leave it open   \
-        ended so we can add more chapters in the future.'
+        Please add a cliff hanger to the end of the story.'
 
         messages.append(
             {
@@ -276,7 +275,9 @@ class StoryInfo:
         prev_chapter = self.chapters[len(self.chapters)-1]
 
         message = f'I want you to add to this existing story. Here is the previous chapter \
-            of the story: {prev_chapter} I want you to write the next one. Please keep it around {self.wordCount} words'
+            of the story: {prev_chapter} \n\
+            I want you to write the next chapter. Please keep it around {self.wordCount} words, \n\
+            Please resolve the cliff hanger from the previous chapter, and add a new cliff hanger to this chapter.'
             
         messages.append(
             {"role": "user", "content": message},
