@@ -9,8 +9,8 @@
         ></script>
 {% endblock %}
 {% block content %}
-    <div class="flex flex-row flex-wrap rounded-xl justify-between">
-        <div class="h-auto basis-5/12 flex justify-start overflow-auto rounded-xl pt-6" >
+    <div class="flex flex-row flex-wrap rounded-xl justify-between m-2 overflow-auto">
+        <div class="h-auto basis-5/12 shrink flex justify-start overflow-auto rounded-xl pt-6" >
             {%for i in range(story.chapterCount):%}
                 <div class="h-fit min-w-fit mr-2 px-6 py-6 bg-gray-100 rounded-xl overflow-auto" >
                     <h2 class = "mb-6 text-2xl text-center">{{story.title}}</h2>
@@ -42,7 +42,7 @@
                 
             {%endfor%}
         </div>
-        <div class="basis-1/2 h-auto px-6 bg-gray-100 rounded-xl overflow-auto mt-6" >
+        <div class="basis-1/2 shrink h-auto px-6 bg-gray-100 rounded-xl overflow-auto mt-6" >
             
             <div class = "w-full grid gap-3 place-items-center place-content-center pt-6" >
                 <form id='form-music' class="bg-white w-full shadow-md rounded px-8 pt-6 pb-8 mb-4"  method="POST">

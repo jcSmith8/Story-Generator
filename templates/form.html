@@ -94,7 +94,7 @@
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="characters">
                         Characters
                     </label>
-                    <textarea class="w-full p-2" name="characters" id="" cols="50" rows="4" placeholder="characters separated comma">{{ story.characters if story.characters is not iterable else ', '.join(story.characters ) }}</textarea>
+                    <textarea class="w-full p-2" name="characters" id="" cols="50" rows="4" placeholder="characters separated comma">{{ story.characters if story.characters is string else ', '.join(story.characters ) }}</textarea>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="main_character">

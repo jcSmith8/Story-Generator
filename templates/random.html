@@ -3,6 +3,14 @@
     Random
 {% endblock %}
 
+{% block form %}
+        <script
+            defer
+            src="{{ url_for('static', filename='js/form.js') }}"
+        ></script>
+{% endblock %}
+
+
 {% block content %}
 
 {% include "skeleton2.html"%}

@@ -182,7 +182,7 @@ def create2():
             )
             db.session.add(story_chapter_new)
             db.session.commit()
-            return render_template('form2.html', story=story_now, create_mode=create_mode)
+            return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
         else:
             
             story_now.add_chapter()

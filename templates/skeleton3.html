@@ -1,0 +1,94 @@
+
+
+<div class="flex flex-row flex-wrap rounded-xl justify-between m-2 overflow-auto" id="skeleton-container">
+    <div class="h-auto basis-5/12 shrink flex justify-start overflow-auto rounded-xl pt-6" >
+        {%for i in range(story.chapterCount):%}
+            <div class="h-fit min-w-fit mr-2 px-6 py-6 bg-gray-100 rounded-xl overflow-auto" >
+                <h2 class = "mb-6 text-2xl text-center">{{story.title}}</h2>
+                <div class = "w-full max-w-lg grid gap-3 place-items-center place-content-center" >
+                    <form class="shadow-md rounded px-3 pt-3 pb-3 m-2 rounded-xl bg-slate-200" action='/create/stage3' method="POST">
+                        <label class = "w-full mb-3 text-xl text-center " for="story">Chapter {{i+1}}</label>
+                        <textarea class = "w-full h-full p-2 bg-slate-50"name="story" id="story" cols="50" rows="15" disabled>
+                            {{story.chapters[i]}}
+                        </textarea>
+                        <div class="flex justify-center flex-wrap w-full m-3">
+                            <label>Original Voice Over</label>
+                            <audio controls>
+                                <source src="/static/mp3_files/{{story.title+'_chapter_'+'%s'%(i)+'.wav'}}" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        
+                        {% if story.voice_over[i] == False: %}
+                            <div class="flex justify-between">
+                                <button class="voice-btn m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit'value={{i+1}} >Generate Voice-Over</button>
+                            </div>
+                        {% endif %}
+                    </form>
+                    <form id='form-voice-{{i+1}}' method = "POST">
+                        <input value={{i+1}} style="display:none;" type="number" name="voice">
+                    </form>
+                </div>
+            </div>
+            
+        {%endfor%}
+    </div>
+    <div class="basis-1/2 shrink h-auto px-6 bg-gray-100 rounded-xl overflow-auto mt-6" >
+        
+        <div class = "w-full grid gap-3 place-items-center place-content-center pt-6" >
+            <form  class="bg-white w-full shadow-md rounded px-8 pt-6 pb-8 mb-4"  method="POST">
+                <label class = "w-full mb-3 text-xl text-center" for="story">{{story.title}}</label>
+                <label class = "w-full mb-3 text-md text-center" for="story">Mubert Prompt: {{story.mubertPrompt}}</label>
+                <div class="my-2 flex justify-center items-center flex-wrap w-full">
+                    <audio controls class = "self-start">
+                        <source src="/static/mubert_mp3s/{{story.title+'_low.wav'}}" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <label for=""><input name="music" type="checkbox" value="static/mubert_mp3s/{{story.title+'_low.wav'}}">Low Intensity</label>
+                </div>
+                <div class="my-2 flex justify-center items-center flex-wrap w-full">
+                    <audio controls class = "self-start">
+                        <source src="/static/mubert_mp3s/{{story.title+'_medium.wav'}}" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <label for=""><input type="checkbox" value="static/mubert_mp3s/{{story.title+'_medium.wav'}}">Medium Intensity</label>
+                </div>
+                <div class="my-2 flex justify-center items-center flex-wrap w-full">
+                    <audio controls class = "self-start">
+                        <source src="/static/mubert_mp3s/{{story.title+'_high.wav'}}" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <label for=""><input type="checkbox" value="static/mubert_mp3s/{{story.title+'_high.wav'}}">High Intensity</label>
+                </div>
+                <input value={{story.chapterCount}} style="display:none;" type="number" name="music">
+             
+                <div class="flex justify-between">
+                    <button  id = "music-btn" class="m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' >Generate Music</button>
+                </div>
+                    
+             
+            </form>
+            <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-2"  method="POST">
+                <label class = "w-full mb-3 text-xl text-center" for="story">{{story.title}} FULL AUDIO</label>
+                
+                <div class="my-2 flex justify-center items-center flex-wrap w-full">
+                    <audio controls class = "self-start">
+                        <source src="/static/full_chapters/{{story.title+'_FULL.wav'}}" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+    <div class="basis-1/2 flex justify-start">
+        <form action='/create/stage3' method="POST" style="display:none;">
+            <input value={{story.chapterCount}} style="display:none;" type="number" name="chapter">
+        </form>
+        <form action='/create/stage3' method="POST" style="display:none;">
+            <input value={{story.chapterCount}} style="display:none;" type="number" name="combine-voice">
+        </form>
+        <button  class="m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' >Add a Chapter </button>
+        <button  class="m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' >Combine Voice-Over</button>
+    </div>
+</div>

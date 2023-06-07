@@ -15,14 +15,17 @@ $( document ).ready(() => {
         ev.preventDefault();
         $('#add-chap-btn').attr("disabled", true);
         
-        for(let i = 0; i < $(this).val() ; i++){
-            let chapter_clone = $('#chapter-container-skeleton').clone(true)
-            console.log(chapter_clone)
-            chapter_clone.appendTo('#horizontal-skeleton')
+        $('input').addClass('skeleton');
+        //$('input').attr('disabled', true);
+        $('input').css('color', 'transparent');
+        if($('textarea')){
+            $('textarea').attr('disabled', true);
+            $('.loading textarea').css('color', 'transparent');
         }
         
-        $('#skeleton-container').css("display", "block");
-        $('#create-form2').css("display", "none");
+        $('button').attr('disabled', true);
+        $('button').css('color', 'transparent');
+        $('button').addClass('skeleton-footer');
         
         let url = '/create/stage3'
         $.ajax({
@@ -46,21 +49,25 @@ $( document ).ready(() => {
         });
     });
 
-    $("#voice-btn").click(function(ev) {
+    $(".voice-btn").click(function(ev) {
         ev.preventDefault();
         form = $('#form-voice-'+ $(this).val())
-        $('#voice-btn').attr("disabled", true);
+        $('.voice-btn').attr("disabled", true);
         console.log($(this).val());
         console.log(form);
         console.log(form.serialize());
-        for(let i = 0; i < $(this).val() ; i++){
-            let chapter_clone = $('#chapter-container-skeleton').clone(true)
-            console.log(chapter_clone)
-            chapter_clone.appendTo('#horizontal-skeleton')
+
+        $('input').addClass('skeleton');
+        //$('input').attr('disabled', true);
+        $('input').css('color', 'transparent');
+        if($('textarea')){
+            $('textarea').attr('disabled', true);
+            $('.loading textarea').css('color', 'transparent');
         }
         
-        $('#skeleton-container').css("display", "block");
-        $('#create-form2').css("display", "none");
+        $('button').attr('disabled', true);
+        $('button').css('color', 'transparent');
+        $('button').addClass('skeleton-footer');
         
         let url = '/create/stage3'
         $.ajax({
@@ -92,14 +99,18 @@ $( document ).ready(() => {
         console.log($(this).val());
         console.log(form);
         console.log(form.serialize());
-        for(let i = 0; i < $(this).val() ; i++){
-            let chapter_clone = $('#chapter-container-skeleton').clone(true)
-            console.log(chapter_clone)
-            chapter_clone.appendTo('#horizontal-skeleton')
+
+        $('input').addClass('skeleton');
+        //$('input').attr('disabled', true);
+        $('input').css('color', 'transparent');
+        if($('textarea')){
+            $('textarea').attr('disabled', true);
+            $('.loading textarea').css('color', 'transparent');
         }
         
-        $('#skeleton-container').css("display", "block");
-        $('#create-form2').css("display", "none");
+        $('button').attr('disabled', true);
+        $('button').css('color', 'transparent');
+        $('button').addClass('skeleton-footer');
         
         let url = '/create/stage3'
         $.ajax({
@@ -128,14 +139,17 @@ $( document ).ready(() => {
         form = $('#form-music');
         $('#music-btn').attr("disabled", true);
         
-        for(let i = 0; i < $(this).val() ; i++){
-            let chapter_clone = $('#chapter-container-skeleton').clone(true)
-            console.log(chapter_clone)
-            chapter_clone.appendTo('#horizontal-skeleton')
+        $('input').addClass('skeleton');
+        //$('input').attr('disabled', true);
+        $('input').css('color', 'transparent');
+        if($('textarea')){
+            $('textarea').attr('disabled', true);
+            $('.loading textarea').css('color', 'transparent');
         }
         
-        $('#skeleton-container').css("display", "block");
-        $('#create-form2').css("display", "none");
+        $('button').attr('disabled', true);
+        $('button').css('color', 'transparent');
+        $('button').addClass('skeleton-footer');
        
         let url = '/create/stage3'
         $.ajax({
@@ -167,6 +181,19 @@ $( document ).ready(() => {
         let url = '/create/stage4';
         let overlay_music = $("input:checkbox:checked").val();
         console.log("music overlay: "+ overlay_music)
+
+        $('input').addClass('skeleton');
+        //$('input').attr('disabled', true);
+        $('input').css('color', 'transparent');
+        if($('textarea')){
+            $('textarea').attr('disabled', true);
+            $('.loading textarea').css('color', 'transparent');
+        }
+        
+        $('button').attr('disabled', true);
+        $('button').css('color', 'transparent');
+        $('button').addClass('skeleton-footer');
+
         $.ajax({
             type: "POST",
             url: url,
