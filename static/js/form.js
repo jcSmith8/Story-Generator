@@ -37,7 +37,7 @@ $( document ).ready(() => {
         ev.preventDefault();
         $('#skeleton-container').css("display", "block");
         $('#create-form').css("display", "none");
-        let form = $("#rnadom-set-form");
+        let form = $("#random-set-form");
         let url = '/create'
         $.ajax({
             type: "POST",

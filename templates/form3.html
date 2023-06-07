@@ -9,7 +9,7 @@
         ></script>
 {% endblock %}
 {% block content %}
-    <div class="flex flex-row flex-wrap overflow-auto rounded-xl justify-between">
+    <div class="flex flex-row flex-wrap rounded-xl justify-between">
         <div class="h-auto basis-5/12 flex justify-start overflow-auto rounded-xl pt-6" >
             {%for i in range(story.chapterCount):%}
                 <div class="h-fit min-w-fit mr-2 px-6 py-6 bg-gray-100 rounded-xl overflow-auto" >
@@ -47,7 +47,7 @@
             <div class = "w-full grid gap-3 place-items-center place-content-center pt-6" >
                 <form id='form-music' class="bg-white w-full shadow-md rounded px-8 pt-6 pb-8 mb-4"  method="POST">
                     <label class = "w-full mb-3 text-xl text-center" for="story">{{story.title}}</label>
-                    
+                    <label class = "w-full mb-3 text-md text-center" for="story">Mubert Prompt: {{story.mubertPrompt}}</label>
                     <div class="my-2 flex justify-center items-center flex-wrap w-full">
                         <audio controls class = "self-start">
                             <source src="/static/mubert_mp3s/{{story.title+'_low.wav'}}" type="audio/wav">
@@ -70,15 +70,22 @@
                         <label for=""><input type="checkbox" value="static/mubert_mp3s/{{story.title+'_high.wav'}}">High Intensity</label>
                     </div>
                     <input value={{story.chapterCount}} style="display:none;" type="number" name="music">
-                    {% if overlays: %}
+                    {% if overlays == True: %}
                         <div class="flex justify-between">
-                            <button  id = "music-btn" class="m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' >Generate Music</button>
+                            <button  id = "music-btn" class="m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' >Generate New Music</button>
                             <button  id = "overlay-btn" class="m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' >Combine Music + Voice</button>
+                        </div>
+                        <div class="flex justify-between w-full">
+                            <form id ="form-mubert-prompt" method="POST" action='/create/stage3'>
+                                <input type="text" class = "bg-gray-100 w-full" placeholder = "{{story.mubertPrompt}}" value = "{{story.mubertPrompt}}" name = "mubert-prompt">
+                            </form>
+                            <button id = "mubert-prompt-btn" class="m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type='submit'>Create New Music Prompt</button>
                         </div>
                     {% else: %}
                         <div class="flex justify-between">
                             <button  id = "music-btn" class="m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' >Generate Music</button>
                         </div>
+                        
                     {% endif %}
                 </form>
                 <form id='form-music-2' class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-2"  method="POST">

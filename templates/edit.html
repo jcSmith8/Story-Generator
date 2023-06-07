@@ -1,63 +1,50 @@
 {% extends "base.html" %}
-
-
+{% block title %}
+    Finale
+{% endblock %}
+{% block form %}
+        <script
+            defer
+            src="{{ url_for('static', filename='js/form2.js') }}"
+        ></script>
+{% endblock %}
 {% block content %}
-
-<div class=" mt-2 px-6 py-6 bg-gray-100 rounded-xl overflow-auto" >
-    <h2 class = "mb-6 text-2xl text-center"> Let's Make a New Story! </h2>
-    <div class = "w-full max-w-lg grid gap-3 place-items-center place-content-center" >
-        <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" action='/create/stage2' method="POST">
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="place">
-                    Place
-                </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='text' name='place' placeholder = 'Place'>
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="time_period">
-                    Time Period
-                </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='number' name='time_period' placeholder = 'Time Period'>
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="characters">
-                    Characters
-                </label>
-                <textarea name="characters" id="" cols="50" rows="4" placeholder="characters separated comma"></textarea>
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="main_character">
-                    Main Character
-                </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='text' name='main_character' placeholder = 'Main Character'>
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="word_count">
-                    Word Count
-                </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='number' name='word_count' placeholder = 'Length'>
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="theme">
-                    Theme
-                </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='text' name='theme' placeholder = 'Theme'>
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="audience">
-                    Audience
-                </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='text' name='audience' placeholder = 'Audience'>
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="cover">
-                    Cover 
-                </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type='file' name='cover' placeholder = 'Theme'>
-            </div>
-            <button  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' >Create a story</button>
-        </form>
+    {% include "skeleton2.html" %}
+    <div class="flex-col overflow-auto rounded-xl p-3" id = "create-form2">
+        <div class="flex justify-start overflow-auto rounded-xl" id = "horizontal-scroll">
+            {% for i in range(story.chapterCount): %}
+                <div class="h-full min-w-fit m-2 px-6 py-6 bg-gray-100 rounded-xl overflow-auto" >
+                    <h2 class = "mb-6 text-2xl text-center">{{story.title}}</h2>
+                    <div class = "w-full max-w-lg grid gap-3 place-items-center place-content-center" >
+                        <form id='form-2' class="shadow-md rounded px-3 pt-3 pb-3 m-2 rounded-xl bg-slate-200" action='/create/stage3' method="POST">
+                            <label class = "w-full mb-3 text-xl text-center " for="story">Chapter {{i+1}}</label>
+                            <textarea class = "w-full h-full p-2 bg-slate-50"name="story" id="story" cols="50" rows="15" disabled>
+                                {{story.chapters[i]}}
+                            </textarea>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div>
+            {%for overlay in overlays:%}
+                <div class="flex justify-center items-center mt-2 h-full m-2 bg-gray-100 rounded-xl overflow-auto">
+                    <label for="">{{overlay.split('_')[-1].split('.')[0]}} Audio Book</label>
+                    <audio controls class="my-1">
+                        <source src="/static/overlay_wavs/{{overlay}}" type="audio/wav" class="bg-white">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            {%endfor%}
+            <form id='form-chapter' action='/create/stage3' method="POST" style="display:none;">
+                <input value={{story.chapterCount}} style="display:none;" type="number" name="chapter">
+            </form>
+            <form id='form-voice-over' action='/create/stage3' method="POST" style="display:none;">
+                <input value={{story.chapterCount}} style="display:none;" type="number" name="voice">
+            </form>
+            <input value={{story.chapterCount}} style="display:none;" type="number" name="voice">
+            <button  id = "save-btn" class="my-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' value = {{story.chapterCount}}>Save the Audio Book</button>
+            <button  id = "back-btn" class="m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style='margin-top:10px;' type='submit' value={{i}}><a href="/">Create A new Story</a></button>
+        </div>
     </div>
-</div>
-
 {% endblock content %}

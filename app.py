@@ -211,6 +211,7 @@ def create3():
     if request.method == "POST":
         # Create a table for the stories
         if route == 'stage2':
+            overlay = False
             for i in range(1, story_now.chapterCount+1):
                 voice_chapter_duration = generate_chapter_voice(story_now, i, 'wav')
             return redirect(url_for('create3'))
@@ -228,6 +229,13 @@ def create3():
             elif 'voice' in request.form.keys():
                 voice_chapter_duration = generate_chapter_voice(story_now, int(request.form['voice']), 'wav')
                 return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+            elif 'mubert-prompt' in request.form.keys():
+                overlay = True
+                story_now.mubertPrompt = request.form['mubert-prompt']
+                regenerate_music_low_intensity(story_now, story_now.chapterCount)
+                regenerate_music_med_intensity(story_now, story_now.chapterCount)
+                regenerate_music_high_intensity(story_now, story_now.chapterCount)
+                return render_template('form3.html', story=story_now, overlays = overlay)
             elif 'music' in request.form.keys():
                 overlay = True
                 regenerate_music_low_intensity(story_now, story_now.chapterCount)
@@ -288,7 +296,7 @@ def edit(story_name):
         # Create a table for the stories
         return render_template('form2.html')
     
-    return render_template('edit.html', story = story, chapters = chapters)
+    return render_template('edit.html', story = story_now,  overlays = overlay_music)
 
 if __name__ == "__main__":
     os.system("python init.py")

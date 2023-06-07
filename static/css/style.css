@@ -35,8 +35,9 @@
   }
 
 body{
-    position: relative;
+    overflow-y:auto;
     min-height:100vh;
+    height:auto;
 
 }
 
@@ -52,10 +53,8 @@ nav, footer{
 }
 
 footer{
-    position:fixed;
-    bottom:0;
+    margin-top:100px;
 }
-
 
 form{
     display:flex;
@@ -78,10 +77,6 @@ img{
 .grid{
     text-transform: uppercase;
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-}
-
-#footer{
-    margin-top: auto;
 }
 
 

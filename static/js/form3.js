@@ -46,10 +46,10 @@ $( document ).ready(() => {
         });
     });
 
-    $(".voice-btn").click(function(ev) {
+    $("#voice-btn").click(function(ev) {
         ev.preventDefault();
         form = $('#form-voice-'+ $(this).val())
-        $('.voice-btn').attr("disabled", true);
+        $('#voice-btn').attr("disabled", true);
         console.log($(this).val());
         console.log(form);
         console.log(form.serialize());
@@ -83,6 +83,7 @@ $( document ).ready(() => {
             }
         });
     });
+
 
     $("#combine-voice-btn").click(function(ev) {
         ev.preventDefault();

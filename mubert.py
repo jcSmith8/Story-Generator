@@ -74,7 +74,7 @@ def create_mubert_song(mubert_prompt, duration, intensity):
     while(in_progress):
         if(track_mubert_status(this_task_id, token) == 1):
             print("\n waiting until track is done . . . \n")
-            sleep(5)
+            sleep(3)
         else:
             break
     full_path = f'static/mubert_mp3s/' + f'TEMP_FILE_NAME' + '.wav'

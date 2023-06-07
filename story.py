@@ -232,8 +232,8 @@ class StoryInfo:
         main character: {self.mainChar}. \n This story will take place during this time:    \
         {self.time}, and this place: {self.place}. \n The story will have an overall theme  \
         similar to {self.theme} and be friendly for audiences that are {self.audience}      \
-        years old. Please make sure to keep the story as long as the word count describes.  \
-        Please add a cliff hanger to the end of the story.'
+        years old. \n Please make sure to keep the story as long as the word count describes,  \
+        and end the story on a cliff hanger to set up for the next chapter. \n Do not inlcude the word "cliffhanger".'
 
         messages.append(
             {
